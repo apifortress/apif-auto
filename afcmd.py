@@ -4,30 +4,30 @@ import os.path
 import json
 import yaml
 
-parser = argparse.ArgumentParser(description='APIF CLI Tool.')
-parser.add_argument('-RA', '--run_all', const='/tests/run-all', nargs='?',
+pull_parser = argparse.ArgumentParser(description='APIF CLI Tool.')
+pull_parser.add_argument('-RA', '--run_all', const='/tests/run-all', nargs='?',
                     help='This will execute all the tests in a chosen project')
-parser.add_argument('-RI', '--run_by_id', const='/tests/', nargs='?', help='this will execute a test with a specific id')
-parser.add_argument( '-RT', '--run_by_tag', const='/tests/tag/', nargs='?', help='this will run a test by a tag')
-parser.add_argument('-H', '--Hook', help="This is your webhook. It's required.")
-parser.add_argument('-f', '--format', action="store", type=str,
+pull_parser.add_argument('-RI', '--run_by_id', const='/tests/', nargs='?', help='this will execute a test with a specific id')
+pull_parser.add_argument( '-RT', '--run_by_tag', const='/tests/tag/', nargs='?', help='this will run a test by a tag')
+pull_parser.add_argument('-H', '--hook', help="This is your webhook. It's required.")
+pull_parser.add_argument('-f', '--format', action="store", type=str,
                     help="This is the output format. Options are JSON, JUnit, or Bool")
-parser.add_argument('-S', '--Sync', const='?sync=true', nargs='?',
+pull_parser.add_argument('-S', '--Sync', const='?sync=true', nargs='?',
                     help="Sync mode. Waits for a response from the API route.")
-parser.add_argument('-d', '--dry', const='&dryrun=true', nargs='?', help='Dry run mode.')
-parser.add_argument('-s', '--silent', const='&silent=true', nargs='?', help='Silent mode')
-parser.add_argument('-o', '--out', action='store', type=str, help="output to directory")
-parser.add_argument('-c', '--config', action='store', type=str, help="path to config file")
-parser.add_argument('-C', '--credentials',
+pull_parser.add_argument('-d', '--dry', const='&dryrun=true', nargs='?', help='Dry run mode.')
+pull_parser.add_argument('-s', '--silent', const='&silent=true', nargs='?', help='Silent mode')
+pull_parser.add_argument('-o', '--out', action='store', type=str, help="output to directory")
+pull_parser.add_argument('-c', '--config', action='store', type=str, help="path to config file")
+pull_parser.add_argument('-C', '--credentials',
                     help='user credentials. overrides credentials present in config file <username:password>')
-parser.add_argument('-t', '--tag', action="store", type=str, help='a test tag')
-parser.add_argument('-i', '--id', action='store', type=str, help='a test id')
-parser.add_argument('-k', '--key', action='store', type=str,
+pull_parser.add_argument('-t', '--tag', action="store", type=str, help='a test tag')
+pull_parser.add_argument('-i', '--id', action='store', type=str, help='a test id')
+pull_parser.add_argument('-k', '--key', action='store', type=str,
                     help='A key from a configuration file. Pulls the related configuration data.')
 
-args = parser.parse_args()
+args = pull_parser.parse_args()
 
-web_hook = args.Hook
+web_hook = args.hook
 
 auth_token = None
 
@@ -42,7 +42,7 @@ if args.key:
     for hook in config_yaml['hooks']:
         key = hook['key']
         if key == args.key:
-            if not args.Hook:
+            if not args.hook:
                 web_hook = hook['url']
             if not args.credentials:
                 config_credentials = (hook['credentials']['username'] + ":" + hook['credentials']['password'])
