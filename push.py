@@ -3,19 +3,51 @@ import requests
 import os.path
 import json
 import yaml
+from lxml import etree
 
 push_parser = argparse.ArgumentParser(description='Push Test to APIF Platform')
-push_parser.add_argument('-P', '--push', const = "potato!", nargs='?', help='I GIEV POTATO')
+push_parser.add_argument('-P', '--push', const="/tests/push", nargs="?", help='I GIEV POTATO')
 push_parser.add_argument('-H', '--hook', help="This is your webhook. It's required.")
 push_parser.add_argument('-r', '--recursive', help='recursive call?')
 push_parser.add_argument('-c', '--config', action='store', type=str, help="path to config file")
 push_parser.add_argument('-C', '--credentials',
                     help='user credentials. overrides credentials present in config file <username:password>')
-push_parser.add_argument('-p', '--path', action="store", help="this is the path to the files you want to push")
+push_parser.add_argument('-p', '--path', type=str, help="this is the path to the files you want to push")
+push_parser.add_argument('-k', '--key', action='store', type=str,
+                    help='A key from a configuration file. Pulls the related configuration data.')
+push_parser.add_argument('-b', '--branch', action='store', type=str, help="The specific branch")
 
 args = push_parser.parse_args()
 
 web_hook = args.hook
+
+branch = "master"
+
+payload = {
+    "resources": [
+        {
+            "path": "",
+            "branch": "", 
+            "revision": "",
+            "content": ""
+        }
+    ],
+}
+
+if args.branch:
+    branch = args.branch
+
+if args.path:
+    # for path in args.path:
+    #     payload['resources'].append(path)
+    with open(os.path.join(args.path)) as stream:
+        try:
+            tree = etree.parse(stream)
+            xml_string = etree.tostring(tree)
+            print(xml_string)
+        except etree.ParseError as exc:
+            print(exc)
+        
 
 if args.config:
     with open(os.path.join(args.config)) as stream:
@@ -43,3 +75,8 @@ if args.credentials:
     parsed_token = json.loads(access_token)
     auth_token = parsed_token['access_token']
 
+if args.push:
+    web_hook = web_hook + args.push
+
+
+print(payload)

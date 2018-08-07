@@ -91,4 +91,9 @@ if args.out:
     response_body = req.content
     file.write(response_body.decode('utf-8'))
 
-print(req.content.decode('utf-8'))
+if req.status_code==200:
+    print("APIF: OK")
+else: 
+    print("APIF:" +req.status_code+ " error")
+
+# print(req.content.decode('utf-8'))
