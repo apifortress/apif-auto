@@ -4,7 +4,7 @@ import os.path
 import json
 import yaml
 from lxml import etree
-from functions import payload_builder
+from functions import payload_builder, get_token
 
 push_parser = argparse.ArgumentParser(description='Push Test to APIF Platform')
 push_parser.add_argument('-P', '--push', const="/tests/push", nargs="?", help='I GIEV POTATO')
@@ -13,7 +13,7 @@ push_parser.add_argument('-r', '--recursive', help='recursive call?')
 push_parser.add_argument('-c', '--config', action='store', type=str, help="path to config file")
 push_parser.add_argument('-C', '--credentials',
                     help='user credentials. overrides credentials present in config file <username:password>')
-push_parser.add_argument('-p', '--path', type=str, help="this is the path to the files you want to push")
+push_parser.add_argument('-p', '--path', type=str, nargs="?", action='append', help="this is the path to the files you want to push")
 push_parser.add_argument('-k', '--key', action='store', type=str,
                     help='A key from a configuration file. Pulls the related configuration data.')
 push_parser.add_argument('-b', '--branch', action='store', type=str, help="The specific branch")
@@ -32,7 +32,8 @@ if args.branch:
     branch = args.branch
 
 if args.path:
-    payload_builder(args.path, branch, payload)
+    for path in args.path:
+        payload_builder(path, branch, payload)
 
 if args.config:
     with open(os.path.join(args.config)) as stream:
@@ -53,9 +54,7 @@ if args.key:
 
 if args.credentials:
     user_creds = args.credentials.split(":")
-    username = user_creds[0]
-    password = user_creds[1]
-    auth_req = requests.get(web_hook + '/login', auth=(username, password))
+    auth_req = requests.get(web_hook + '/login', auth=(user_creds[0], user_creds[1]))
     access_token = auth_req.content
     parsed_token = json.loads(access_token)
     auth_token = parsed_token['access_token']

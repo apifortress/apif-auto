@@ -1,5 +1,7 @@
 import os.path
 from lxml import etree
+import requests
+import json
 
 def payload_builder(path, branch, payload):
         for root, dirs, files in os.walk(path):
@@ -22,3 +24,13 @@ def payload_builder(path, branch, payload):
                     new_resource["branch"] = branch
                     new_resource["content"] = xml_string
                     payload["resources"].append(new_resource)
+
+def get_token(credentials, hook):
+    user_creds = credentials.split(":")
+    username = user_creds[0]
+    password = user_creds[1]
+    auth_req = requests.get(hook + '/login', auth=(username, password))
+    access_token = auth_req.content
+    parsed_token = json.loads(access_token)
+    auth_token = parsed_token['access_token']
+    return auth_token
