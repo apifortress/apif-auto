@@ -4,12 +4,12 @@ import os.path
 import json
 import yaml
 from lxml import etree
-from functions import payload_builder, get_token
+from functions import payload_builder, get_token, traverser
 
 push_parser = argparse.ArgumentParser(description='Push Test to APIF Platform')
 push_parser.add_argument('-P', '--push', const="/tests/push", nargs="?", help='I GIEV POTATO')
 push_parser.add_argument('-H', '--hook', help="This is your webhook. It's required.")
-push_parser.add_argument('-r', '--recursive', help='recursive call?')
+push_parser.add_argument('-r', '--recursive', nargs="?", action='append', help='recursive call?')
 push_parser.add_argument('-c', '--config', action='store', type=str, help="path to config file")
 push_parser.add_argument('-C', '--credentials',
                     help='user credentials. overrides credentials present in config file <username:password>')
@@ -32,17 +32,21 @@ if args.branch:
     branch = args.branch
 
 if args.path:
-    print(args.path)
     for path in args.path:
         payload_builder(path, branch, payload)
 
 if args.config:
-    print(args.config)
     with open(os.path.join(args.config)) as stream:
         try:
             config_yaml = (yaml.load(stream))
         except yaml.YAMLError as exc:
             print(exc)
+
+if args.recursive:
+    for recursion in args.recursive:
+        print(recursion)
+        (traverser(recursion, branch, payload))
+
 
 if args.key:
     for hook in config_yaml['hooks']:
@@ -71,5 +75,3 @@ if auth_token:
         print("APIF: OK")
     else:
         print("APIF: " + str(req.status_code) + " error")
-
-
