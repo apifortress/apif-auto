@@ -95,5 +95,3 @@ if req.status_code==200:
     print("APIF: OK")
 else: 
     print("APIF:" +req.status_code+ " error")
-
-# print(req.content.decode('utf-8'))
