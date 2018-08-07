@@ -6,7 +6,10 @@ import json
 def payload_builder(path, branch, payload):
         for root, dirs, files in os.walk(path):
             dir_name = root.split('/')[-2]
+            print(dir_name)
+            print(files)
             for filename in files:
+                print(filename)
                 if filename == "unit.xml" or "input.xml":
                     new_resource = {
                         "path" : "",
@@ -24,6 +27,8 @@ def payload_builder(path, branch, payload):
                     new_resource["branch"] = branch
                     new_resource["content"] = xml_string
                     payload["resources"].append(new_resource)
+                else:
+                    continue
 
 def get_token(credentials, hook):
     user_creds = credentials.split(":")

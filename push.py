@@ -32,10 +32,12 @@ if args.branch:
     branch = args.branch
 
 if args.path:
+    print(args.path)
     for path in args.path:
         payload_builder(path, branch, payload)
 
 if args.config:
+    print(args.config)
     with open(os.path.join(args.config)) as stream:
         try:
             config_yaml = (yaml.load(stream))
