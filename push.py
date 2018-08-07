@@ -4,6 +4,7 @@ import os.path
 import json
 import yaml
 from lxml import etree
+from functions import payload_builder
 
 push_parser = argparse.ArgumentParser(description='Push Test to APIF Platform')
 push_parser.add_argument('-P', '--push', const="/tests/push", nargs="?", help='I GIEV POTATO')
@@ -31,26 +32,7 @@ if args.branch:
     branch = args.branch
 
 if args.path:
-    for root, dirs, files in os.walk(args.path):
-        dir_name = root.split('/')[-2]
-        for filename in files:
-            if filename == "unit.xml" or "input.xml":
-                new_resource = {
-                    "path" : "",
-                    "branch" : "",
-                    "revision" : "",
-                    "content" : ""
-                }
-                with open(os.path.join(args.path + filename)) as stream:
-                    try:
-                        tree = etree.parse(stream)
-                        xml_string = etree.tostring(tree)
-                    except etree.ParseError as exc:
-                        print(exc)
-                new_resource["path"] = dir_name + "/" + filename
-                new_resource["branch"] = branch
-                new_resource["content"] = xml_string
-                payload["resources"].append(new_resource)
+    payload_builder(args.path, branch, payload)
 
 if args.config:
     with open(os.path.join(args.config)) as stream:
