@@ -44,8 +44,7 @@ if args.config:
 
 if args.recursive:
     for recursion in args.recursive:
-        print(recursion)
-        (traverser(recursion, branch, payload))
+        traverser(recursion, branch, payload)
 
 
 if args.key:
