@@ -32,6 +32,7 @@ if args.branch:
 
 if args.path:
     for root, dirs, files in os.walk(args.path):
+        dir_name = root.split('/')[-2]
         for filename in files:
             if filename == "unit.xml" or "input.xml":
                 new_resource = {
@@ -46,13 +47,10 @@ if args.path:
                         xml_string = etree.tostring(tree)
                     except etree.ParseError as exc:
                         print(exc)
-                new_resource["path"] = filename
-                new_resource["branch"] = args.branch
+                new_resource["path"] = dir_name + "/" + filename
+                new_resource["branch"] = branch
                 new_resource["content"] = xml_string
                 payload["resources"].append(new_resource)
-
-   
-        
 
 if args.config:
     with open(os.path.join(args.config)) as stream:
@@ -83,5 +81,12 @@ if args.credentials:
 if args.push:
     web_hook = web_hook + args.push
 
+if auth_token:
+    headers = {'Authorization': 'Bearer ' + auth_token}
+    req = requests.post(web_hook, headers=headers, data=json.dumps(payload).encode('utf-8'))
+    if req.status_code==200:
+        print("APIF: OK")
+    else:
+        print("APIF: " + str(req.status_code) + " error")
 
-print(payload)
+
