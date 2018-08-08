@@ -3,6 +3,8 @@ from lxml import etree
 import requests
 import json
 
+## This is the function that generates a payload for the -p (path) tag.
+
 def payload_builder(path, branch, payload):
         for root, dirs, files in os.walk(path):
             dir_name = root.split('/')[-2]
@@ -27,6 +29,8 @@ def payload_builder(path, branch, payload):
                 else:
                     continue
 
+## This function allows us to generate an API Fortress security token based on the provided u/p combo
+
 def get_token(credentials, hook):
     user_creds = credentials.split(":")
     username = user_creds[0]
@@ -42,6 +46,8 @@ payload = {"resources":[]}
 branch = "master"
 
 xml_string = ""
+
+## This function allows us to traverse through the filesystem past a given path and find all of the pertinent files. 
 
 def traverser(route, branch, payload):
     for root, dirs, files in os.walk(route):
