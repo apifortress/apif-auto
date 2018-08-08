@@ -36,6 +36,7 @@ ex: to run all of the tests in a specific project, we would use the following co
 
 A configuration file is a YAML file that is formatted as follows:
 
+```yaml
 hooks:
   - key: cool_proj1
     url: https://mastiff.apifortress.com/app/api/rest/v3/A_WEBHOOK
@@ -47,5 +48,6 @@ hooks:
     credentials:
       username: (another username)
       password: (another password)
+```
 
 Once you create a configuration file, you can pass the path with **c** and the key to the data you wish to pass with **k**.
