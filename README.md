@@ -34,7 +34,7 @@ ex: to run all of the tests in a specific project, we would use the following co
 
 # PUSH
 
-Push allows us to push tests into API Fortress. When tests are downloaded from the platform, they come as 2 XML files (unit.xml & input.xml). We can use this tool to push those files back to API Fortress, either individually or in bulk. 
+Push allows us to push tests into API Fortress. When tests are downloaded from the platform, they come as 2 XML files (unit.xml & input.xml). We can use this tool to push those files back to an API Fortress project, either individually or in bulk. 
 
 ## PUSH EXECUTION FLAGS
 
@@ -44,8 +44,10 @@ Push allows us to push tests into API Fortress. When tests are downloaded from t
 ## PUSH OPTION FLAGS
 
 * **\-p** - PATH - This provides the path to the test file you wish to upload. **You can pass multiple paths.**
+* **\-r** - RECURSIVE - This allows you to provide a path. The program will then check every folder in that path for test files and prepare them for upload. 
+* **\-b** - BRANCH - This allows you to specify a Git branch that these test files are attached to. **Default is master.** 
 *  **\-c** - CONFIG - This provides the path to a configuration file which can provide webhooks and user credentials.
-*  **\-C** - CREDENTIALS - This allows you to manually pass user credentials (username:password) [SUPERSEDES CONFIG FILE]
+*  **\-C** - CREDENTIALS - This allows you to manually pass user credentials (username:password) **(SUPERSEDES CONFIG FILE)**
 *  **\-k** - KEY - This is how you pass a key to reference in a configuration file.
 
 # CONFIGURATION FILE
@@ -66,6 +68,21 @@ hooks:
       password: (another password)
 ```
 
-Once you create a configuration file, you can pass the path with **\-c** and the key to the data you wish to pass with **\-k**.
+Once you create a configuration file, you can pass the path with **\-c** and the key to the data you wish to pass with **\-k**. For example, passing **\-k cool_proj1** would reference the URL and credentials stored associated with that key. 
 
 # EXAMPLES
+
+Execute all of the tests in a project and output the results to a JUnit/XML file via an authenticated route:
+
+**python pull.py -H http://mastiff.apifortress.com/yourWebHook -RA -S -C my@username.com:password1 -f junit -o some/route/results.xml**
+
+Push all of the tests from a directory and all of its subdirectories to a project:
+
+**python push.py -H http://mastiff.apifortress.com/yourWebHook -P -C my@username.com:password1 -r some/directory/with/tests**
+
+Execute one test in a project by ID, using a config file for credentials and webhook:
+
+**python pull.py -c path/to/config/file -RI -i testidhash8924jsdfiwef891**
+
+
+##The order of the arguments passed does not matter. 
