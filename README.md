@@ -13,7 +13,7 @@ Pull allows us to execute tests on the platform and do things with that data. We
 * **\-RA** - RUN ALL - This will execute all of the tests in a chosen project.
 * **\-RT** - RUN BY TAG - This will execute all tests with a selected tag (requires the -t flag to set tag) 
 * **\-RI** - RUN BY ID - This will execute a test with a specific ID (requires the -i flag to set id)
-* **\-H** - HOOK - This is the webhook of the project you are working with.
+* **\-H** - HOOK - This is the webhook of the project you are working with. **(SUPERSEDES CONFIG FILE)**
 
 ex: to run all of the tests in a specific project, we would use the following command string:
 
@@ -27,9 +27,25 @@ ex: to run all of the tests in a specific project, we would use the following co
 *  **\-s** - SILENT - This will cause the test to run in silent mode. 
 *  **\-o** - OUTPUT - This will write the result of the test to a local file. You must provide the path to the file to be created. Remember your filetype! (.json/.xml)
 *  **\-c** - CONFIG - This provides the path to a configuration file which can provide webhooks and user credentials.
-*  **\-C** - CREDENTIALS - This allows you to manually pass user credentials (username:password)
+*  **\-C** - CREDENTIALS - This allows you to manually pass user credentials (username:password) **(SUPERSEDES CONFIG FILE)**
 *  **\-t** - TAG - This is how you pass a tag for RUN BY TAG mode.
 *  **\-i** - ID - This is how you pass an ID for RUN BY ID mode.
+*  **\-k** - KEY - This is how you pass a key to reference in a configuration file.
+
+# PUSH
+
+Push allows us to push tests into API Fortress. When tests are downloaded from the platform, they come as 2 XML files (unit.xml & input.xml). We can use this tool to push those files back to API Fortress, either individually or in bulk. 
+
+## PUSH EXECUTION FLAGS
+
+* **\-P** - PUSH - This will push a payload to API Fortress.
+* **\-H** - HOOK - This is the webhook of the project you are working with.
+
+## PUSH OPTION FLAGS
+
+* **\-p** - PATH - This provides the path to the test file you wish to upload. **You can pass multiple paths.**
+*  **\-c** - CONFIG - This provides the path to a configuration file which can provide webhooks and user credentials.
+*  **\-C** - CREDENTIALS - This allows you to manually pass user credentials (username:password) [SUPERSEDES CONFIG FILE]
 *  **\-k** - KEY - This is how you pass a key to reference in a configuration file.
 
 # CONFIGURATION FILE
@@ -50,4 +66,6 @@ hooks:
       password: (another password)
 ```
 
-Once you create a configuration file, you can pass the path with **c** and the key to the data you wish to pass with **k**.
+Once you create a configuration file, you can pass the path with **\-c** and the key to the data you wish to pass with **\-k**.
+
+# EXAMPLES
