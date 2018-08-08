@@ -10,10 +10,10 @@ Pull allows us to execute tests on the platform and do things with that data. We
 
 ## PULL EXECUTION FLAGS
 
-/- **RA** - RUN ALL - This will execute all of the tests in a chosen project.
-/- **RT** - RUN BY TAG - This will execute all tests with a selected tag (requires the -t flag to set tag) 
-/- **RI** - RUN BY ID - This will execute a test with a specific ID (requires the -i flag to set id)
-/- **H** - HOOK - This is the webhook of the project you are working with.
+* **\-RA** - RUN ALL - This will execute all of the tests in a chosen project.
+* **\-RT** - RUN BY TAG - This will execute all tests with a selected tag (requires the -t flag to set tag) 
+* **\-RI** - RUN BY ID - This will execute a test with a specific ID (requires the -i flag to set id)
+* **\-H** - HOOK - This is the webhook of the project you are working with.
 
 ex: to run all of the tests in a specific project, we would use the following command string:
 
