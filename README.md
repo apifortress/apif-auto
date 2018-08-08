@@ -85,4 +85,5 @@ Execute one test in a project by ID, using a config file for credentials and web
 **python pull.py -c path/to/config/file -RI -i testidhash8924jsdfiwef891**
 
 
-##The order of the arguments passed does not matter. 
+## The order of the arguments passed does not matter. 
+## Remember, in a bash environment, anything that has a space in it needs to be wrapped in quotes. This goes for paths, filenames, etc. 
