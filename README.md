@@ -21,16 +21,16 @@ ex: to run all of the tests in a specific project, we would use the following co
 
 ## PULL OPTION FLAGS
 
-* /- **f** - FORMAT - This will determine the format of the test result output (JSON, JUnit, Bool)
-* /- **S** - SYNC - This will provide a response body with the result of the test.
-* /- **d** - DRY - This will cause the test run to be a dry run.
-* /- **s** - SILENT - This will cause the test to run in silent mode. 
-* /- **o** - OUTPUT - This will write the result of the test to a local file. You must provide the path to the file to be created. Remember your filetype! (.json/.xml)
-* /- **c** - CONFIG - This provides the path to a configuration file which can provide webhooks and user credentials.
-* /- **C** - CREDENTIALS - This allows you to manually pass user credentials (username:password)
-* /- **t** - TAG - This is how you pass a tag for RUN BY TAG mode.
-* /- **i** - ID - This is how you pass an ID for RUN BY ID mode.
-* /- **k** - KEY - This is how you pass a key to reference in a configuration file.
+* - **\\-f** - FORMAT - This will determine the format of the test result output (JSON, JUnit, Bool)
+* - **\\-S** - SYNC - This will provide a response body with the result of the test.
+* - **d** - DRY - This will cause the test run to be a dry run.
+* - **s** - SILENT - This will cause the test to run in silent mode. 
+* - **o** - OUTPUT - This will write the result of the test to a local file. You must provide the path to the file to be created. Remember your filetype! (.json/.xml)
+* - **c** - CONFIG - This provides the path to a configuration file which can provide webhooks and user credentials.
+* - **C** - CREDENTIALS - This allows you to manually pass user credentials (username:password)
+* - **t** - TAG - This is how you pass a tag for RUN BY TAG mode.
+* - **i** - ID - This is how you pass an ID for RUN BY ID mode.
+* - **k** - KEY - This is how you pass a key to reference in a configuration file.
 
 # CONFIGURATION FILE
 
