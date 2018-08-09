@@ -4,11 +4,11 @@ The tool, or rather, pair of tools, are designed to reduce the amount of legwork
 
 From the command line interface:
 
-# PULL
+# RUN
 
-Pull allows us to execute tests on the platform and do things with that data. We can run tests via API either in an authenticated or unauthenticated state. By passing credentials, we receive a more verbose test result. We can output this result to a file. We also have access to all of the standard options that API Fortress provides in its API (silent run, dry run, etc.)
+Run allows us to execute tests on the platform and do things with that data. We can run tests via API either in an authenticated or unauthenticated state. By passing credentials, we receive a more verbose test result. We can output this result to a file. We also have access to all of the standard options that API Fortress provides in its API (silent run, dry run, etc.)
 
-## PULL EXECUTION FLAGS
+## RUN EXECUTION FLAGS
 
 * **\-RA** - RUN ALL - This will execute all of the tests in a chosen project.
 * **\-RT** - RUN BY TAG - This will execute all tests with a selected tag (requires the -t flag to set tag) 
