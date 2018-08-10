@@ -16,9 +16,7 @@ def payload_builder(path, branch, payload):
                         "revision" : "",
                         "content" : ""
                     }
-                    print(new_resource)
                     with open(os.path.join(path + filename)) as stream:
-                        print(stream)
                         try:
                             tree = ET.parse(stream)
                             root = tree.getroot()
