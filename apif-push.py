@@ -19,7 +19,7 @@ push_parser.add_argument('-k', '--key', action='store', type=str,
 push_parser.add_argument('-b', '--branch', action='store', type=str, help="The specific branch")
 
 if len(sys.argv) == 1:
-    pull_parser.print_help(sys.stderr)
+    push_parser.print_help(sys.stderr)
     sys.exit(1)
 
 args = push_parser.parse_args()
