@@ -7,8 +7,8 @@ import sys
 from functions import payload_builder, get_token, traverser
 
 push_parser = argparse.ArgumentParser(description='Push Test to APIF Platform')
-push_parser.add_argument('-P', '--push', const="/tests/push", nargs="?", help='This command executes a push to APIF')
-push_parser.add_argument('-H', '--hook', help="This is your webhook. It's required.")
+push_parser.add_argument('method', action="store", choices=['push'], help='This command executes a push to APIF')
+push_parser.add_argument('hook', action="store", type=str, help="This is your webhook. It is required.")
 push_parser.add_argument('-r', '--recursive', nargs="?", action='append', help='Recursive file-getter')
 push_parser.add_argument('-c', '--config', action='store', type=str, help="path to config file")
 push_parser.add_argument('-C', '--credentials',
@@ -64,17 +64,11 @@ if args.key:
                 args.credentials = config_credentials
 
 if args.credentials:
-    user_creds = args.credentials.split(":")
-    auth_req = requests.get(web_hook + '/login', auth=(user_creds[0], user_creds[1]))
-    access_token = auth_req.content
-    parsed_token = json.loads(access_token)
-    if not access_token in parsed_token: 
-        print("Invalid credentials!")
-    else:
-        auth_token = parsed_token['access_token']
+    auth_token = get_token(args.credentials, web_hook)
+    print(auth_token)
 
-if args.push:
-    web_hook = web_hook + args.push
+if args.method:
+    web_hook = web_hook + '/push/'
 
 if auth_token:
     headers = {'Authorization': 'Bearer ' + auth_token}
@@ -83,3 +77,4 @@ if auth_token:
         print("APIF: OK")
     else:
         print("APIF: " + str(req.status_code) + " error")
+

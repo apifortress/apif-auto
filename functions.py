@@ -18,11 +18,11 @@ def payload_builder(path, branch, payload):
                     }
                     print(new_resource)
                     with open(os.path.join(path + filename)) as stream:
-                        print(stream)
                         try:
                             tree = ET.parse(stream)
                             root = tree.getroot()
                             xml_string = ET.tostring(root)
+                            print(xml_string)
                         except ET.ParseError as exc:
                             print(exc, "This XML document is invalid.")
                     new_resource["path"] = dir_name + "/" + filename

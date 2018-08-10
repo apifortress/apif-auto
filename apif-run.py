@@ -7,11 +7,8 @@ import sys
 from functions import get_token
 
 pull_parser = argparse.ArgumentParser(description='APIF CLI Tool.')
-pull_parser.add_argument('-RA', '--run_all', const='/tests/run-all', nargs='?',
-                    help='This will execute all the tests in a chosen project')
-pull_parser.add_argument('-RI', '--run_by_id', const='/tests/', nargs='?', help='this will execute a test with a specific id')
-pull_parser.add_argument( '-RT', '--run_by_tag', const='/tests/tag/', nargs='?', help='this will run a test by a tag')
-pull_parser.add_argument('-H', '--hook', help="This is your webhook. It's required.")
+pull_parser.add_argument('method', action="store", type=str, choices=['run-all', 'run-by-id', 'run-by-tag'], help="this is the type of run that you'll be performing.")
+pull_parser.add_argument('hook', action="store", type=str, help="This is your webhook. It is required.")
 pull_parser.add_argument('-f', '--format', action="store", type=str,
                     help="This is the output format. Options are JSON, JUnit, or Bool")
 pull_parser.add_argument('-S', '--Sync', const='?sync=true', nargs='?',
@@ -57,14 +54,14 @@ if args.key:
 if args.credentials:
     auth_token = get_token(args.credentials, web_hook)
 
-if args.run_all:
-    web_hook = web_hook + args.run_all
+if args.method == "run-all":
+    web_hook = web_hook + '/tests/run-all'
 
-if args.run_by_tag:
-    web_hook = web_hook + args.run_by_tag + args.tag + "/run"
+if args.method == "run-by-tag":
+    web_hook = web_hook + 'tests/tag/' + args.tag + "/run"
 
-if args.run_by_id:
-    web_hook = web_hook + args.run_by_id + args.id + "/run"
+if args.method == "run-by-id":
+    web_hook = web_hook + '/tests/' + args.id + "/run"
 
 route_list = []
 
@@ -86,13 +83,13 @@ if auth_token:
     if req.status_code==200:
         print("APIF: OK")
     else: 
-        print("APIF:" +req.status_code+ " error")
+        print("APIF:" +str(req.status_code)+ " error")
 elif web_hook:
     req = requests.get(web_hook)
     if req.status_code==200:
         print("APIF: OK")
     else: 
-        print("APIF:" +req.status_code+ " error")
+        print("APIF:" +str(req.status_code)+ " error")
 
 if args.out:
     file = open(os.path.join(args.out), 'w')
