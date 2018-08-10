@@ -32,7 +32,8 @@ def payload_builder(path, branch, payload):
                 else:
                     continue
 
-## This function allows us to generate an API Fortress security token based on the provided u/p combo
+## This function allows us to generate an API Fortress security token based on the provided u/p combo.
+#  If the credentials are bad, it will still carry out the API call, but in an unauthenticated fashion.
 
 def get_token(credentials, hook):
     user_creds = credentials.split(":")
