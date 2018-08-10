@@ -3,6 +3,7 @@ import requests
 import os.path
 import json
 import yaml
+from functions import get_token
 
 pull_parser = argparse.ArgumentParser(description='APIF CLI Tool.')
 pull_parser.add_argument('-RA', '--run_all', const='/tests/run-all', nargs='?',
@@ -49,13 +50,7 @@ if args.key:
                 args.credentials = config_credentials
 
 if args.credentials:
-    user_creds = args.credentials.split(":")
-    username = user_creds[0]
-    password = user_creds[1]
-    auth_req = requests.get(web_hook + '/login', auth=(username, password))
-    access_token = auth_req.content
-    parsed_token = json.loads(access_token)
-    auth_token = parsed_token['access_token']
+    auth_token = get_token(args.credentials, web_hook)
 
 if args.run_all:
     web_hook = web_hook + args.run_all

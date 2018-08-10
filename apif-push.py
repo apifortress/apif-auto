@@ -63,7 +63,10 @@ if args.credentials:
     auth_req = requests.get(web_hook + '/login', auth=(user_creds[0], user_creds[1]))
     access_token = auth_req.content
     parsed_token = json.loads(access_token)
-    auth_token = parsed_token['access_token']
+    if not access_token in parsed_token: 
+        print("Invalid credentials!")
+    else:
+        auth_token = parsed_token['access_token']
 
 if args.push:
     web_hook = web_hook + args.push

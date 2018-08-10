@@ -36,19 +36,15 @@ def payload_builder(path, branch, payload):
 
 def get_token(credentials, hook):
     user_creds = credentials.split(":")
-    username = user_creds[0]
-    password = user_creds[1]
-    auth_req = requests.get(hook + '/login', auth=(username, password))
+    auth_req = requests.get(hook + '/login', auth=(user_creds[0], user_creds[1]))
     access_token = auth_req.content
     parsed_token = json.loads(access_token)
-    auth_token = parsed_token['access_token']
-    return auth_token
-
-payload = {"resources":[]}
-
-branch = "master"
-
-xml_string = ""
+    if not "access_token" in parsed_token: 
+        print("Invalid credentials!")
+        return None
+    else:
+        auth_token = parsed_token['access_token']
+        return auth_token
 
 ## This function allows us to traverse through the filesystem past a given path and find all of the pertinent files. 
 
