@@ -5,3 +5,4 @@ config.yml
 venv2
 format.json
 builder.py
+test.py

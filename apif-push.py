@@ -3,7 +3,6 @@ import requests
 import os.path
 import json
 import yaml
-from lxml import etree
 from functions import payload_builder, get_token, traverser
 
 push_parser = argparse.ArgumentParser(description='Push Test to APIF Platform')

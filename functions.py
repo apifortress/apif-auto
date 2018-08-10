@@ -1,5 +1,5 @@
 import os.path
-from lxml import etree
+import xml.etree.ElementTree as ET
 import requests
 import json
 
@@ -16,12 +16,15 @@ def payload_builder(path, branch, payload):
                         "revision" : "",
                         "content" : ""
                     }
+                    print(new_resource)
                     with open(os.path.join(path + filename)) as stream:
+                        print(stream)
                         try:
-                            tree = etree.parse(stream)
-                            xml_string = etree.tostring(tree)
-                        except etree.ParseError as exc:
-                            print(exc)
+                            tree = ET.parse(stream)
+                            root = tree.getroot()
+                            xml_string = ET.tostring(root)
+                        except ET.ParseError as exc:
+                            print(exc, "This XML document is invalid.")
                     new_resource["path"] = dir_name + "/" + filename
                     new_resource["branch"] = branch
                     new_resource["content"] = xml_string
@@ -63,10 +66,11 @@ def traverser(route, branch, payload):
                     }
                 with open(os.path.abspath(os.path.join(root + "/" + next_file))) as stream:
                     try:
-                        tree = etree.parse(stream)
-                        xml_string = etree.tostring(tree)
-                    except etree.ParseError as exc:
-                            print(exc)
+                        tree = ET.parse(stream)
+                        tree_root = tree.getroot()
+                        xml_string = ET.tostring(tree_root)
+                    except ET.ParseError as exc:
+                            print(exc, "This XML document is invalid.")
                     new_resource["path"] = dir_name + "/" + next_file
                     new_resource["branch"] = branch
                     new_resource["content"] = xml_string
