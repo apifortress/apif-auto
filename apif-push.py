@@ -3,6 +3,7 @@ import requests
 import os.path
 import json
 import yaml
+import sys
 from functions import payload_builder, get_token, traverser
 
 push_parser = argparse.ArgumentParser(description='Push Test to APIF Platform')
@@ -16,6 +17,10 @@ push_parser.add_argument('-p', '--path', type=str, nargs="?", action='append', h
 push_parser.add_argument('-k', '--key', action='store', type=str,
                     help='A key from a configuration file. Pulls the related configuration data.')
 push_parser.add_argument('-b', '--branch', action='store', type=str, help="The specific branch")
+
+if len(sys.argv) == 1:
+    pull_parser.print_help(sys.stderr)
+    sys.exit(1)
 
 args = push_parser.parse_args()
 

@@ -3,6 +3,7 @@ import requests
 import os.path
 import json
 import yaml
+import sys
 from functions import get_token
 
 pull_parser = argparse.ArgumentParser(description='APIF CLI Tool.')
@@ -25,6 +26,10 @@ pull_parser.add_argument('-t', '--tag', action="store", type=str, help='a test t
 pull_parser.add_argument('-i', '--id', action='store', type=str, help='a test id')
 pull_parser.add_argument('-k', '--key', action='store', type=str,
                     help='A key from a configuration file. Pulls the related configuration data.')
+
+if len(sys.argv) == 1:
+    pull_parser.print_help(sys.stderr)
+    sys.exit(1)
 
 args = pull_parser.parse_args()
 
