@@ -83,15 +83,20 @@ for route in route_list:
 if auth_token:
     headers = {'Authorization': 'Bearer ' + auth_token}
     req = requests.get(web_hook, headers=headers)
+    if req.status_code==200:
+        print("APIF: OK")
+    else: 
+        print("APIF:" +req.status_code+ " error")
 elif web_hook:
     req = requests.get(web_hook)
+    if req.status_code==200:
+        print("APIF: OK")
+    else: 
+        print("APIF:" +req.status_code+ " error")
 
 if args.out:
     file = open(os.path.join(args.out), 'w')
     response_body = req.content
     file.write(response_body.decode('utf-8'))
 
-if req.status_code==200:
-    print("APIF: OK")
-else: 
-    print("APIF:" +req.status_code+ " error")
+

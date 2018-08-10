@@ -6,9 +6,9 @@ import yaml
 from functions import payload_builder, get_token, traverser
 
 push_parser = argparse.ArgumentParser(description='Push Test to APIF Platform')
-push_parser.add_argument('-P', '--push', const="/tests/push", nargs="?", help='I GIEV POTATO')
+push_parser.add_argument('-P', '--push', const="/tests/push", nargs="?", help='This command executes a push to APIF')
 push_parser.add_argument('-H', '--hook', help="This is your webhook. It's required.")
-push_parser.add_argument('-r', '--recursive', nargs="?", action='append', help='recursive call?')
+push_parser.add_argument('-r', '--recursive', nargs="?", action='append', help='Recursive file-getter')
 push_parser.add_argument('-c', '--config', action='store', type=str, help="path to config file")
 push_parser.add_argument('-C', '--credentials',
                     help='user credentials. overrides credentials present in config file <username:password>')
@@ -20,6 +20,8 @@ push_parser.add_argument('-b', '--branch', action='store', type=str, help="The s
 args = push_parser.parse_args()
 
 web_hook = args.hook
+
+auth_token = None
 
 branch = "master"
 
