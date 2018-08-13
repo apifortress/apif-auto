@@ -4,7 +4,7 @@ The tool, or rather, pair of tools, are designed to reduce the amount of legwork
 
 From the command line interface:
 
-# RUN
+# APIF-RUN
 
 Run allows us to execute tests on the platform and do things with that data. We can run tests via API either in an authenticated or unauthenticated state. By passing credentials, we receive a more verbose test result. We can output this result to a file. We also have access to all of the standard options that API Fortress provides in its API (silent run, dry run, etc.)
 
@@ -31,7 +31,7 @@ ex: to run all of the tests in a specific project, we would use the following co
 *  **\-t** - TAG - This is how you pass a tag for RUN BY TAG mode.
 *  **\-i** - ID - This is how you pass an ID for RUN BY ID mode.
 
-# PUSH
+# APIF-PUSH
 
 Push allows us to push tests into API Fortress. When tests are downloaded from the platform, they come as 2 XML files (unit.xml & input.xml). We can use this tool to push those files back to an API Fortress project, either individually or in bulk. 
 
