@@ -66,7 +66,7 @@ hooks:
       password: (another password)
 ```
 
-Once you create a configuration file, you can pass the path with **\-c** and the key to the data you wish to pass with **\-k**. For example, passing **\-k cool_proj1** would reference the URL and credentials stored associated with that key. 
+Once you create a configuration file, you can pass the path with **\-c** and the key to the data in place of the normal hook URL. If you also pass credentials, they'll override the credentials in the configuration file. 
 
 # EXAMPLES
 
