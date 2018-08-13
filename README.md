@@ -10,16 +10,16 @@ Run allows us to execute tests on the platform and do things with that data. We 
 
 ## RUN EXECUTION FLAGS
 
-* **\-RA** - RUN ALL - This will execute all of the tests in a chosen project.
-* **\-RT** - RUN BY TAG - This will execute all tests with a selected tag (requires the -t flag to set tag) 
-* **\-RI** - RUN BY ID - This will execute a test with a specific ID (requires the -i flag to set id)
-* **\-H** - HOOK - This is the webhook of the project you are working with. **(SUPERSEDES CONFIG FILE)**
+* **run-all** - RUN ALL - This will execute all of the tests in a chosen project.
+* **run-by-tag** - RUN BY TAG - This will execute all tests with a selected tag (requires the -t flag to set tag) 
+* **run-by-id** - RUN BY ID - This will execute a test with a specific ID (requires the -i flag to set id)
+* **hook** - HOOK - This is the webhook of the project you are working with. This can be either an API Fortress URL, or the key from a configuration file (set the path to the config file with the **\-c** tag)
 
 ex: to run all of the tests in a specific project, we would use the following command string:
 
-**python pull.py -H http://mastiff.apifortress.com/yourWebHook -RA**
+**python apif-run.py run-all http://mastiff.apifortress.com/yourWebHook**
 
-## PULL OPTION FLAGS
+## RUN OPTION FLAGS
 
 *  **\-f** - FORMAT - This will determine the format of the test result output (JSON, JUnit, Bool)
 *  **\-S** - SYNC - This will provide a response body with the result of the test.
@@ -30,7 +30,6 @@ ex: to run all of the tests in a specific project, we would use the following co
 *  **\-C** - CREDENTIALS - This allows you to manually pass user credentials (username:password) **(SUPERSEDES CONFIG FILE)**
 *  **\-t** - TAG - This is how you pass a tag for RUN BY TAG mode.
 *  **\-i** - ID - This is how you pass an ID for RUN BY ID mode.
-*  **\-k** - KEY - This is how you pass a key to reference in a configuration file.
 
 # PUSH
 
@@ -38,8 +37,8 @@ Push allows us to push tests into API Fortress. When tests are downloaded from t
 
 ## PUSH EXECUTION FLAGS
 
-* **\-P** - PUSH - This will push a payload to API Fortress.
-* **\-H** - HOOK - This is the webhook of the project you are working with.
+* **push** - PUSH - This will push a payload to API Fortress.
+* **hook** - HOOK - This is the webhook of the project you are working with. This can be either an API Fortress URL, or the key from a configuration file (set the path to the config file with the **\-c** tag)
 
 ## PUSH OPTION FLAGS
 
@@ -48,7 +47,6 @@ Push allows us to push tests into API Fortress. When tests are downloaded from t
 * **\-b** - BRANCH - This allows you to specify a Git branch that these test files are attached to. **Default is master.** 
 *  **\-c** - CONFIG - This provides the path to a configuration file which can provide webhooks and user credentials.
 *  **\-C** - CREDENTIALS - This allows you to manually pass user credentials (username:password) **(SUPERSEDES CONFIG FILE)**
-*  **\-k** - KEY - This is how you pass a key to reference in a configuration file.
 
 # CONFIGURATION FILE
 
@@ -74,15 +72,15 @@ Once you create a configuration file, you can pass the path with **\-c** and the
 
 Execute all of the tests in a project and output the results to a JUnit/XML file via an authenticated route:
 
-**python pull.py -H http://mastiff.apifortress.com/yourWebHook -RA -S -C my@username.com:password1 -f junit -o some/route/results.xml**
+**python apif-run.py run-all http://mastiff.apifortress.com/yourWebHook -S -C my@username.com:password1 -f junit -o some/route/results.xml**
 
 Push all of the tests from a directory and all of its subdirectories to a project:
 
-**python push.py -H http://mastiff.apifortress.com/yourWebHook -P -C my@username.com:password1 -r some/directory/with/tests**
+**python apif-push.py push http://mastiff.apifortress.com/yourWebHook -P -C my@username.com:password1 -r some/directory/with/tests**
 
 Execute one test in a project by ID, using a config file for credentials and webhook:
 
-**python pull.py -c path/to/config/file -RI -i testidhash8924jsdfiwef891**
+**python apif-run.py config_key -c path/to/config/file -RI -i testidhash8924jsdfiwef891**
 
 # NOTES
 

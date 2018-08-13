@@ -22,7 +22,6 @@ pull_parser.add_argument('-C', '--credentials',
 pull_parser.add_argument('-t', '--tag', action="store", type=str, help='a test tag')
 pull_parser.add_argument('-i', '--id', action='store', type=str, help='a test id')
 
-
 if len(sys.argv) == 1:
     pull_parser.print_help(sys.stderr)
     sys.exit(1)
