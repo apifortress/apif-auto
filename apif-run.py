@@ -93,7 +93,8 @@ elif web_hook:
     else: 
         print("APIF:" +str(req.status_code)+ " error")
 if args.Sync:
-    print(req.content)
+    parsed_json = json.loads(req.content)
+    print(json.dumps(parsed_json, indent=4))
 
 if args.out:
     file = open(os.path.join(args.out), 'w')
