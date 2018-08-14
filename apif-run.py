@@ -47,6 +47,12 @@ if args.config:
             print(exc)
 
 if config_key:
+    if not args.config:
+        with open(os.path.join('./config.yml')) as stream:
+            try:
+                config_yaml = (yaml.load(stream))
+            except yaml.YAMLError as exc:
+                print(exc)
     for hook in config_yaml['hooks']:
         key = hook['key']
         if key == config_key:
@@ -102,8 +108,11 @@ elif web_hook:
     else: 
         print("APIF:" +str(req.status_code)+ " error")
 if args.Sync:
-    parsed_json = json.loads(req.content)
-    print(json.dumps(parsed_json, indent=4))
+    if req.headers["Content-Type"].startswith('application/json'):
+        parsed_json = json.loads(req.content)
+        print(json.dumps(parsed_json, indent=4))
+    else:
+        print(req.content)
 
 if args.out:
     file = open(os.path.join(args.out), 'w')
