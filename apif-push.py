@@ -61,6 +61,12 @@ if args.recursive:
 
 
 if config_key:
+    if not args.config:
+        with open(os.path.join('./config.yml')) as stream:
+            try:
+                config_yaml = (yaml.load(stream))
+            except yaml.YAMLError as exc:
+                print(exc)
     for hook in config_yaml['hooks']:
         key = hook['key']
         if key == config_key:
