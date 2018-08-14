@@ -26,7 +26,7 @@ ex: to run all of the tests in a specific project, we would use the following co
 *  **\-d** - DRY - This will cause the test run to be a dry run.
 *  **\-s** - SILENT - This will cause the test to run in silent mode. 
 *  **\-o** - OUTPUT - This will write the result of the test to a local file. You must provide the path to the file to be created. Remember your filetype! (.json/.xml)
-*  **\-c** - CONFIG - This provides the path to a configuration file which can provide webhooks and user credentials.
+*  **\-c** - CONFIG - This provides the path to a configuration file which can provide webhooks and user credentials. If no path is specified, the program will look for a config.yml in the same directory as it is (./config.yml)
 *  **\-C** - CREDENTIALS - This allows you to manually pass user credentials (username:password) **(SUPERSEDES CONFIG FILE)**
 *  **\-t** - TAG - This is how you pass a tag for RUN BY TAG mode.
 *  **\-i** - ID - This is how you pass an ID for RUN BY ID mode.
@@ -45,7 +45,7 @@ Push allows us to push tests into API Fortress. When tests are downloaded from t
 * **\-p** - PATH - This provides the path to the test file you wish to upload. **You can pass multiple paths.**
 * **\-r** - RECURSIVE - This allows you to provide a path. The program will then check every folder in that path for test files and prepare them for upload. 
 * **\-b** - BRANCH - This allows you to specify a Git branch that these test files are attached to. **Default is master.** 
-*  **\-c** - CONFIG - This provides the path to a configuration file which can provide webhooks and user credentials.
+*  **\-c** - CONFIG - This provides the path to a configuration file which can provide webhooks and user credentials. If no path is specified, the program will look for a config.yml in the same directory as it is (./config.yml)
 *  **\-C** - CREDENTIALS - This allows you to manually pass user credentials (username:password) **(SUPERSEDES CONFIG FILE)**
 
 # CONFIGURATION FILE
