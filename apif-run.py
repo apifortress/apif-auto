@@ -16,7 +16,7 @@ pull_parser.add_argument('-S', '--Sync', const='?sync=true', nargs='?',
 pull_parser.add_argument('-d', '--dry', const='&dryrun=true', nargs='?', help='Dry run mode.')
 pull_parser.add_argument('-s', '--silent', const='&silent=true', nargs='?', help='Silent mode')
 pull_parser.add_argument('-o', '--out', action='store', type=str, help="output to directory")
-pull_parser.add_argument('-c', '--config', action='store', type=str, help="path to config file")
+pull_parser.add_argument('-c', '--config', action='store', type=str, help="path to config file. Defaults to ./config.yml")
 pull_parser.add_argument('-C', '--credentials',
                     help='user credentials. overrides credentials present in config file <username:password>')
 pull_parser.add_argument('-t', '--tag', action="store", type=str, help='a test tag')
@@ -52,8 +52,9 @@ if config_key:
         if key == config_key:
             web_hook = hook['url']
             if not args.credentials:
-                config_credentials = (hook['credentials']['username'] + ":" + hook['credentials']['password'])
-                args.credentials = config_credentials
+                if "credentials" in hook:
+                    config_credentials = (hook['credentials']['username'] + ":" + hook['credentials']['password'])
+                    args.credentials = config_credentials
 
 if args.credentials:
     auth_token = get_token(args.credentials, web_hook)

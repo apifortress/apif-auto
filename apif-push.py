@@ -66,8 +66,9 @@ if config_key:
         if key == config_key:
             web_hook = hook['url']
             if not args.credentials:
-                config_credentials = (hook['credentials']['username'] + ":" + hook['credentials']['password'])
-                args.credentials = config_credentials
+                if "credentials" in hook:
+                    config_credentials = (hook['credentials']['username'] + ":" + hook['credentials']['password'])
+                    args.credentials = config_credentials
 
 if args.credentials:
     auth_token = get_token(args.credentials, web_hook)
