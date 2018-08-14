@@ -75,6 +75,9 @@ if config_key:
                 if "credentials" in hook:
                     config_credentials = (hook['credentials']['username'] + ":" + hook['credentials']['password'])
                     args.credentials = config_credentials
+                else:
+                    print("Push requires user credentials!")
+                    sys.exit(1)
 
 if args.credentials:
     auth_token = get_token(args.credentials, web_hook)
