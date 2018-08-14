@@ -3,6 +3,7 @@ import xml.etree.ElementTree as ET
 import requests
 import json
 import sys
+import yaml
 
 ## This is the function that generates a payload for the -p (path) tag.
 
@@ -72,5 +73,6 @@ def traverser(route, branch, payload):
                     new_resource["branch"] = branch
                     new_resource["content"] = xml_string
                     payload["resources"].append(new_resource)
+
     
 
