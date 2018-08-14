@@ -61,9 +61,17 @@ if args.credentials:
 if args.method == "run-all":
     web_hook = web_hook + '/tests/run-all'
 elif args.method == "run-by-tag":
-    web_hook = web_hook + '/tests/tag/' + args.tag + "/run"
+    if args.tag:
+        web_hook = web_hook + '/tests/tag/' + args.tag + "/run"
+    else:
+        print("Run by tag requires a tag (-t)")
+        sys.exit(1)
 elif args.method == "run-by-id":
-    web_hook = web_hook + '/tests/' + args.id + "/run"
+    if args.id:
+        web_hook = web_hook + '/tests/' + args.id + "/run"
+    else:
+        print("Run by ID requires an ID (-i)")
+        sys.exit(1)
 
 route_list = []
 

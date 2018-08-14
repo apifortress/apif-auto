@@ -2,6 +2,7 @@ import os.path
 import xml.etree.ElementTree as ET
 import requests
 import json
+import sys
 
 ## This is the function that generates a payload for the -p (path) tag.
 
@@ -40,6 +41,7 @@ def get_token(credentials, hook):
     parsed_token = json.loads(access_token)
     if not "access_token" in parsed_token: 
         print("Invalid credentials!")
+        sys.exit(1)
         return None
     else:
         auth_token = parsed_token['access_token']
