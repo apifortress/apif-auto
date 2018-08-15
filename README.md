@@ -37,7 +37,6 @@ Push allows us to push tests into API Fortress. When tests are downloaded from t
 
 ## PUSH EXECUTION FLAGS
 
-* **push** - PUSH - This will push a payload to API Fortress.
 * **hook** - HOOK - This is the webhook of the project you are working with. This can be either an API Fortress URL, or the key from a configuration file (set the path to the config file with the **\-c** tag)
 
 ## PUSH OPTION FLAGS
