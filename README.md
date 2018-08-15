@@ -63,9 +63,11 @@ hooks:
     credentials:
       username: (another username)
       password: (another password)
+  - key: unauth_proj
+    url: https://mastiff.apifortress.com/app/api/rest/v3/JUST_A_WEBHOOK_WITHOUT_CREDENTIALS
 ```
 
-Once you create a configuration file, you can pass the path with **\-c** and the key to the data in place of the normal hook URL. If you also pass credentials, they'll override the credentials in the configuration file. 
+Once you create a configuration file, you can pass the path with **\-c** and the key to the data in place of the normal hook URL. If you also pass credentials, they'll override the credentials in the configuration file. If you don't include credentials in the config file, you can pass them manually or leave them out entirely. 
 
 # EXAMPLES
 
