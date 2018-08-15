@@ -34,7 +34,6 @@ def payload_builder(path, branch, payload):
                     continue
 
 ## This function allows us to generate an API Fortress security token based on the provided u/p combo.
-#  If the credentials are bad, it will still carry out the API call, but in an unauthenticated fashion.
 
 def get_token(credentials, hook):
     user_creds = credentials.split(":")
@@ -49,7 +48,7 @@ def get_token(credentials, hook):
         auth_token = parsed_token['access_token']
         return auth_token
 
-## This function allows us to traverse through the filesystem past a given path and find all of the pertinent files. 
+## This function allows us to traverse through the filesystem past a given path and find all of the pertinent files for the -r tag. 
 
 def traverser(route, branch, payload):
     for root, dirs, files in os.walk(route):
