@@ -75,18 +75,25 @@ if config_key:
                 if "credentials" in hook:
                     config_credentials = (hook['credentials']['username'] + ":" + hook['credentials']['password'])
                     args.credentials = config_credentials
-                else:
-                    print("Push requires user credentials!")
-                    sys.exit(1)
+                
 
 if args.credentials:
     auth_token = get_token(args.credentials, web_hook)
 
 if auth_token:
     headers = {'Authorization': 'Bearer ' + auth_token}
+    print("FIRST")
     req = requests.post(web_hook + '/tests/push', headers=headers, data=json.dumps(payload).encode('utf-8'))
     if req.status_code==200:
         print("APIF: OK")
     else:
         print("APIF: " + str(req.status_code) + " error")
-
+elif web_hook:
+    req = requests.post(web_hook + '/tests/push', data=json.dumps(payload).encode('utf-8'))
+    print(req.content)
+    print("SECONND")
+    print(auth_token)
+    if req.status_code==200:
+        print("APIF: OK")
+    else: 
+        print("APIF:" +str(req.status_code)+ " error")
