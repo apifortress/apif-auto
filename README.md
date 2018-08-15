@@ -81,7 +81,7 @@ Push all of the tests from a directory and all of its subdirectories to a projec
 
 Execute one test in a project by ID, using a config file for credentials and webhook:
 
-**python apif-run.py config_key -c path/to/config/file -RI -i testidhash8924jsdfiwef891**
+**python apif-run.py run-by-id config_key -c path/to/config/file -i testidhash8924jsdfiwef891**
 
 # NOTES
 
