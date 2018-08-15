@@ -77,7 +77,7 @@ Execute all of the tests in a project and output the results to a JUnit/XML file
 
 Push all of the tests from a directory and all of its subdirectories to a project:
 
-**python apif-push.py push http://mastiff.apifortress.com/yourWebHook -P -C my@username.com:password1 -r some/directory/with/tests**
+**python apif-push.py http://mastiff.apifortress.com/yourWebHook -P -C my@username.com:password1 -r some/directory/with/tests**
 
 Execute one test in a project by ID, using a config file for credentials and webhook:
 
