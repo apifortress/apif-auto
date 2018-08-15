@@ -7,7 +7,6 @@ import sys
 from functions import payload_builder, get_token, traverser
 
 push_parser = argparse.ArgumentParser(description='Push Test to APIF Platform')
-# push_parser.add_argument('method', action="store", choices=['push'], help='This command executes a push to APIF')
 push_parser.add_argument('hook', action="store", type=str, help="This is your webhook. It is required. It can be passed as either a URL, or a key from a configuration file.")
 push_parser.add_argument('-r', '--recursive', nargs="?", action='append', help='Recursive file-getter')
 push_parser.add_argument('-c', '--config', action='store', type=str, help="path to config file")
@@ -90,9 +89,6 @@ if auth_token:
         print("APIF: " + str(req.status_code) + " error")
 elif web_hook:
     req = requests.post(web_hook + '/tests/push', data=json.dumps(payload).encode('utf-8'))
-    print(req.content)
-    print("SECONND")
-    print(auth_token)
     if req.status_code==200:
         print("APIF: OK")
     else: 
