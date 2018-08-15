@@ -10,22 +10,23 @@ import yaml
 def payload_builder(path, branch, payload):
         for root, dirs, files in os.walk(path):
             dir_name = root.split('/')[-2]
-            for filename in files:
-                if filename == ("unit.xml" or "input.xml"):
+            for next_file in files:
+                acceptable = ['input.xml', "unit.xml"]
+                if next_file in acceptable:
                     new_resource = {
                         "path" : "",
                         "branch" : "",
                         "revision" : "",
                         "content" : ""
                     }
-                    with open(os.path.join(path + filename)) as stream:
+                    with open(os.path.join(path + next_file)) as stream:
                         try:
                             tree = ET.parse(stream)
                             root = tree.getroot()
                             xml_string = ET.tostring(root)
                         except ET.ParseError as exc:
                             print(exc, "This XML document is invalid.")
-                    new_resource["path"] = dir_name + "/" + filename
+                    new_resource["path"] = dir_name + "/" + next_file
                     new_resource["branch"] = branch
                     new_resource["content"] = xml_string
                     payload["resources"].append(new_resource)
