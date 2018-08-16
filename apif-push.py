@@ -44,8 +44,16 @@ if args.branch:
     branch = args.branch
 
 if args.path:
-    for path in args.path:
-        payload_builder(path, branch, payload)
+    if not args.recursive:
+        for path in args.path:
+            if path[len(path)-1] != "/":
+                path = path + "/"
+            payload_builder(path, branch, payload)
+    else:
+        for path in args.path:
+            if path[len(path)-1] != "/":
+                path = path + "/"
+
 
 if args.config:
     with open(os.path.join(args.config)) as stream:
@@ -55,8 +63,8 @@ if args.config:
             print(exc)
 
 if args.recursive:
-    for recursion in args.recursive:
-        traverser(recursion, branch, payload)
+    for path in args.path:
+        traverser(path, branch, payload)
 
 
 if config_key:
@@ -81,7 +89,6 @@ if args.credentials:
 
 if auth_token:
     headers = {'Authorization': 'Bearer ' + auth_token}
-    print("FIRST")
     req = requests.post(web_hook + '/tests/push', headers=headers, data=json.dumps(payload).encode('utf-8'))
     if req.status_code==200:
         print("APIF: OK")

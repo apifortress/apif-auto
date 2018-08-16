@@ -42,7 +42,7 @@ Push allows us to push tests into API Fortress. When tests are downloaded from t
 ## PUSH OPTION FLAGS
 
 * **\-p** - PATH - This provides the path to the test file you wish to upload. **You can pass multiple paths.**
-* **\-r** - RECURSIVE - This allows you to provide a path. The program will then check every folder in that path for test files and prepare them for upload. 
+* **\-r** - RECURSIVE - This flag will make the call recursive; It will dive through the directory passed with **-p** and grab every test in all of its subdirectories.
 * **\-b** - BRANCH - This allows you to specify a Git branch that these test files are attached to. **Default is master.** 
 *  **\-c** - CONFIG - This provides the path to a configuration file which can provide webhooks and user credentials. If no path is specified, the program will look for a config.yml in the same directory as it is (./config.yml)
 *  **\-C** - CREDENTIALS - This allows you to manually pass user credentials (username:password) **(SUPERSEDES CONFIG FILE)**
@@ -77,7 +77,7 @@ Execute all of the tests in a project and output the results to a JUnit/XML file
 
 Push all of the tests from a directory and all of its subdirectories to a project:
 
-**python apif-push.py http://mastiff.apifortress.com/yourWebHook -P -C my@username.com:password1 -r some/directory/with/tests**
+**python apif-push.py http://mastiff.apifortress.com/yourWebHook -C my@username.com:password1 -r -p some/directory/with/tests**
 
 Execute one test in a project by ID, using a config file for credentials and webhook:
 
