@@ -21,6 +21,7 @@ pull_parser.add_argument('-C', '--credentials',
                     help='user credentials. overrides credentials present in config file <username:password>')
 pull_parser.add_argument('-t', '--tag', action="store", type=str, help='a test tag')
 pull_parser.add_argument('-i', '--id', action='store', type=str, help='a test id')
+pull_parser.add_argument('-e', '--env', action='append', nargs="?", help='Any environmental override variables you wish to pass')
 
 if len(sys.argv) == 1:
     pull_parser.print_help(sys.stderr)
@@ -33,6 +34,8 @@ config_key = None
 web_hook = None
 
 auth_token = None
+
+params = {}
 
 if args.hook.startswith("http" or "https"):
     web_hook = args.hook
@@ -65,6 +68,11 @@ if config_key:
 if args.credentials:
     auth_token = get_token(args.credentials, web_hook)
 
+if args.env:
+    for env in args.env:
+        split_env = env.split(":")
+        params[split_env[0]] = split_env[1]
+
 if args.method == "run-all":
     web_hook = web_hook + '/tests/run-all'
 elif args.method == "run-by-tag":
@@ -96,6 +104,9 @@ for route in route_list:
 
 if auth_token:
     headers = {'Authorization': 'Bearer ' + auth_token}
+    if args.env:
+        parsed_params = json.dumps(params)
+        headers["params"] = parsed_params
     req = requests.get(web_hook, headers=headers)
     if req.status_code==200:
         print("APIF: OK")
