@@ -65,15 +65,14 @@ def traverser(route, branch, payload):
                     }
                 with open(os.path.abspath(os.path.join(root + "/" + next_file))) as stream:
                     try:
-                        tree = ET.parse(stream)
-                        tree_root = tree.getroot()
-                        xml_string = ET.tostring(tree_root)
+                        content = stream.read()
+                        tree = ET.fromstring(content)
+                        new_resource["path"] = dir_name + "/" + next_file
+                        new_resource["branch"] = branch
+                        new_resource["content"] = content
+                        payload["resources"].append(new_resource)
                     except ET.ParseError as exc:
                             print(exc, "This XML document is invalid.")
-                    new_resource["path"] = dir_name + "/" + next_file
-                    new_resource["branch"] = branch
-                    new_resource["content"] = xml_string
-                    payload["resources"].append(new_resource)
 
 def bool_return(json):
     if type(json) is list:
