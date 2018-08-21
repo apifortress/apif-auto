@@ -10,7 +10,7 @@ pull_parser = argparse.ArgumentParser(description='APIF CLI Tool.')
 pull_parser.add_argument('method', action="store", type=str, choices=['run-all', 'run-by-id', 'run-by-tag'], help="this is the type of run that you'll be performing.")
 pull_parser.add_argument('hook', action="store", type=str, help="This is your webhook. It is required. It can be passed as either a URL, or a key from a configuration file.")
 pull_parser.add_argument('-f', '--format', action="store", type=str,
-                    help="This is the output format. Default is JSON, other options are junit or bool")
+                    help="This is the output format. Default is JSON, other options are junit or bool. REQUIRES SYNC MODE (-S)")
 pull_parser.add_argument('-S', '--Sync', const='?sync=true', nargs='?',
                     help="Sync mode. Waits for a response from the API route.")
 pull_parser.add_argument('-d', '--dry', const='&dryrun=true', nargs='?', help='Dry run mode.')
