@@ -74,5 +74,17 @@ def traverser(route, branch, payload):
                     new_resource["content"] = xml_string
                     payload["resources"].append(new_resource)
 
+def bool_return(json):
+    if type(json) is list:
+        for result in json:
+            if result["failuresCount"] > 0:
+                return False
+            else: 
+                return True
+    else:
+        if json['failuresCount'] > 0:
+            return False
+        else:
+            return True
     
 

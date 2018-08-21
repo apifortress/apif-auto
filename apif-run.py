@@ -4,13 +4,13 @@ import os.path
 import json
 import yaml
 import sys
-from functions import get_token
+from functions import get_token, bool_return
 
 pull_parser = argparse.ArgumentParser(description='APIF CLI Tool.')
 pull_parser.add_argument('method', action="store", type=str, choices=['run-all', 'run-by-id', 'run-by-tag'], help="this is the type of run that you'll be performing.")
 pull_parser.add_argument('hook', action="store", type=str, help="This is your webhook. It is required. It can be passed as either a URL, or a key from a configuration file.")
 pull_parser.add_argument('-f', '--format', action="store", type=str,
-                    help="This is the output format. Options are JSON, JUnit, or Bool")
+                    help="This is the output format. Default is JSON, other options are junit or bool")
 pull_parser.add_argument('-S', '--Sync', const='?sync=true', nargs='?',
                     help="Sync mode. Waits for a response from the API route.")
 pull_parser.add_argument('-d', '--dry', const='&dryrun=true', nargs='?', help='Dry run mode.')
@@ -119,8 +119,11 @@ elif web_hook:
     else: 
         print("APIF:" +str(req.status_code)+ " error")
 if args.Sync:
+    parsed_json = json.loads(req.content)
+    if args.format == "bool":
+        print(bool_return(parsed_json))
+        sys.exit(1)
     if req.headers["Content-Type"].startswith('application/json'):
-        parsed_json = json.loads(req.content)
         print(json.dumps(parsed_json, indent=4))
     else:
         print(req.content)
