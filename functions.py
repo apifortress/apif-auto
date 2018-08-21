@@ -3,6 +3,7 @@ import xml.etree.ElementTree as ET
 import requests
 import json
 import sys
+import io
 import yaml
 
 ## This is the function that generates a payload for the -p (path) tag.
@@ -21,15 +22,15 @@ def payload_builder(path, branch, payload):
                     }
                     with open(os.path.join(path + next_file)) as stream:
                         try:
-                            tree = ET.parse(stream)
-                            root = tree.getroot()
-                            xml_string = ET.tostring(root)
+                            content = stream.read()
+                            tree = ET.fromstring(content)
+                            new_resource["path"] = dir_name + "/" + next_file
+                            new_resource["branch"] = branch
+                            new_resource["content"] = content
+                            payload["resources"].append(new_resource)
                         except ET.ParseError as exc:
                             print(exc, "This XML document is invalid.")
-                    new_resource["path"] = dir_name + "/" + next_file
-                    new_resource["branch"] = branch
-                    new_resource["content"] = xml_string
-                    payload["resources"].append(new_resource)
+
                 else:
                     continue
 
@@ -39,7 +40,7 @@ def get_token(credentials, hook):
     user_creds = credentials.split(":")
     auth_req = requests.get(hook + '/login', auth=(user_creds[0], user_creds[1]))
     access_token = auth_req.content
-    parsed_token = json.loads(access_token)
+    parsed_token = json.loads(access_token.decode("utf-8"))
     if not "access_token" in parsed_token: 
         print("Invalid credentials!")
         sys.exit(1)
