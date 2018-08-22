@@ -10,7 +10,8 @@ import yaml
 
 def payload_builder(path, branch, payload):
         for root, dirs, files in os.walk(path):
-            dir_name = root.split('/')[-2]
+            seperator = os.sep
+            dir_name = root.split(seperator)[-2]
             for next_file in files:
                 acceptable = ['input.xml', "unit.xml"]
                 if next_file in acceptable:
