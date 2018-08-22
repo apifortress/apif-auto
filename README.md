@@ -21,7 +21,7 @@ ex: to run all of the tests in a specific project, we would use the following co
 
 ## RUN OPTION FLAGS
 
-*  **\-f** - FORMAT - This will determine the format of the test result output (JSON, JUnit, Bool). REQUIRES SYNC MODE (-S)
+*  **\-f** - FORMAT - This will determine the format of the test result output (JSON, JUnit, Bool). **REQUIRES SYNC MODE (-S)**
 *  **\-S** - SYNC - This will provide a response body with the result of the test.
 *  **\-d** - DRY - This will cause the test run to be a dry run.
 *  **\-s** - SILENT - This will cause the test to run in silent mode. 
