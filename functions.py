@@ -42,7 +42,7 @@ def get_token(credentials, hook):
     auth_req = requests.get(hook + '/login', auth=(user_creds[0], user_creds[1]))
     access_token = auth_req.content
     parsed_token = json.loads(access_token.decode("utf-8"))
-    if not "access_token" in parsed_token: 
+    if not "access_token" in parsed_token:
         print("Invalid credentials!")
         sys.exit(1)
         return None
@@ -50,12 +50,12 @@ def get_token(credentials, hook):
         auth_token = parsed_token['access_token']
         return auth_token
 
-## This function allows us to traverse through the filesystem past a given path and find all of the pertinent files for the -r tag. 
+## This function allows us to traverse through the filesystem past a given path and find all of the pertinent files for the -r tag.
 
 def traverser(route, branch, payload):
     for root, dirs, files in os.walk(route):
         seperator = os.sep
-        dir_name = root.split(seperator)[-2]
+        dir_name = root.split(seperator)[-1]
         for next_file in files:
             acceptable = ['input.xml', "unit.xml"]
             if next_file in acceptable:
@@ -65,6 +65,7 @@ def traverser(route, branch, payload):
                         "revision" : "",
                         "content" : ""
                     }
+                
                 with open(os.path.abspath(os.path.join(root + "/" + next_file))) as stream:
                     try:
                         content = stream.read()
@@ -81,12 +82,11 @@ def bool_return(json):
         for result in json:
             if result["failuresCount"] > 0:
                 return False
-            else: 
+            else:
                 return True
     else:
         if json['failuresCount'] > 0:
             return False
         else:
             return True
-    
 

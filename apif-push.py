@@ -46,13 +46,13 @@ if args.branch:
 if args.path:
     if not args.recursive:
         for path in args.path:
-            if path[len(path)-1] != "/":
-                path = path + "/"
+            if path[len(path)-1] != os.sep:
+                path = path + os.sep
             payload_builder(path, branch, payload)
     else:
         for path in args.path:
-            if path[len(path)-1] != "/":
-                path = path + "/"
+            if path[len(path)-1] != os.sep:
+                path = path + os.sep
 
 
 if args.config:
@@ -82,7 +82,7 @@ if config_key:
                 if "credentials" in hook:
                     config_credentials = (hook['credentials']['username'] + ":" + hook['credentials']['password'])
                     args.credentials = config_credentials
-                
+
 
 if args.credentials:
     auth_token = get_token(args.credentials, web_hook)
@@ -98,5 +98,5 @@ elif web_hook:
     req = requests.post(web_hook + '/tests/push', data=json.dumps(payload).encode('utf-8'))
     if req.status_code==200:
         print("APIF: OK")
-    else: 
+    else:
         print("APIF:" +str(req.status_code)+ " error")
