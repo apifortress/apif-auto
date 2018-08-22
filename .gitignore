@@ -6,3 +6,6 @@ venv2
 format.json
 builder.py
 test.py
+__pycache__
+.idea
+*.pyc
