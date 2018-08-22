@@ -54,7 +54,8 @@ def get_token(credentials, hook):
 
 def traverser(route, branch, payload):
     for root, dirs, files in os.walk(route):
-        dir_name = root.split('/')[-1]
+        seperator = os.sep
+        dir_name = root.split(seperator)[-2]
         for next_file in files:
             acceptable = ['input.xml', "unit.xml"]
             if next_file in acceptable:
