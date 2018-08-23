@@ -90,3 +90,27 @@ def bool_return(json):
         else:
             return True
 
+def request_executor(webhook, auth_token, params, sync, format):
+    if auth_token:
+        headers = {'Authorization': 'Bearer ' + auth_token}
+    if params:
+        body = json.dumps({'params': params}).encode('utf-8')
+    req = requests.post(webhook, headers=headers if headers else None, data=body if body else None)
+    print(req.request.body)
+    if sync:
+        if format == "bool":
+            parsed_json = json.loads(req.content)
+            print(bool_return(parsed_json))
+            sys.exit(1)
+        if req.headers["Content-Type"].startswith('application/json'):
+            parsed_json = json.loads(req.content)
+            print(json.dumps(parsed_json, indent=4))
+        else:
+            print(req.content)
+    else:
+        if req.status_code==200:
+            print("APIF: OK")
+        else:
+            print("APIF: " +str(req.status_code)+ " error")
+    return req
+    

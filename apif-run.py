@@ -4,7 +4,7 @@ import os.path
 import json
 import yaml
 import sys
-from functions import get_token, bool_return
+from functions import get_token, bool_return, request_executor
 
 pull_parser = argparse.ArgumentParser(description='APIF CLI Tool.')
 pull_parser.add_argument('method', action="store", type=str, choices=['run-all', 'run-by-id', 'run-by-tag'], help="this is the type of run that you'll be performing.")
@@ -102,33 +102,7 @@ for arg in potential_args:
 for route in route_list:
     web_hook = web_hook + route
 
-if auth_token:
-    headers = {'Authorization': 'Bearer ' + auth_token}
-    if args.env:
-        body = json.dumps({'params': params}).encode('utf-8')
-        req = requests.post(web_hook, headers=headers, data=body)
-    else:
-        req = requests.get(web_hook, headers=headers)
-    if req.status_code==200:
-        print("APIF: OK")
-    else:
-        print("APIF:" +str(req.status_code)+ " error")
-elif web_hook:
-    req = requests.get(web_hook)
-    if req.status_code==200:
-        print("APIF: OK")
-    else:
-        print("APIF:" +str(req.status_code)+ " error")
-if args.Sync:
-    if args.format == "bool":
-        parsed_json = json.loads(req.content)
-        print(bool_return(parsed_json))
-        sys.exit(1)
-    if req.headers["Content-Type"].startswith('application/json'):
-        parsed_json = json.loads(req.content)
-        print(json.dumps(parsed_json, indent=4))
-    else:
-        print(req.content)
+req = request_executor(web_hook, auth_token, params, args.Sync, args.format)
 
 if args.out:
     file = open(os.path.join(args.out), 'w')
