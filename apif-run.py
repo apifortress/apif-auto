@@ -110,20 +110,21 @@ if auth_token:
     req = requests.get(web_hook, headers=headers)
     if req.status_code==200:
         print("APIF: OK")
-    else: 
+    else:
         print("APIF:" +str(req.status_code)+ " error")
 elif web_hook:
     req = requests.get(web_hook)
     if req.status_code==200:
         print("APIF: OK")
-    else: 
+    else:
         print("APIF:" +str(req.status_code)+ " error")
 if args.Sync:
-    parsed_json = json.loads(req.content)
     if args.format == "bool":
+        parsed_json = json.loads(req.content)
         print(bool_return(parsed_json))
         sys.exit(1)
     if req.headers["Content-Type"].startswith('application/json'):
+        parsed_json = json.loads(req.content)
         print(json.dumps(parsed_json, indent=4))
     else:
         print(req.content)
