@@ -69,7 +69,7 @@ if args.recursive:
 
 if config_key:
     if not args.config:
-        with open(os.path.join('./config.yml')) as stream:
+        with open(os.path.join(os.path.dirname(os.path.abspath(__file__)),'config.yml')) as stream:
             try:
                 config_yaml = (yaml.load(stream))
             except yaml.YAMLError as exc:
