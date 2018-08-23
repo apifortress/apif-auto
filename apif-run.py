@@ -105,9 +105,10 @@ for route in route_list:
 if auth_token:
     headers = {'Authorization': 'Bearer ' + auth_token}
     if args.env:
-        parsed_params = json.dumps(params)
-        headers["params"] = parsed_params
-    req = requests.get(web_hook, headers=headers)
+        body = json.dumps({'params': params}).encode('utf-8')
+        req = requests.post(web_hook, headers=headers, data=body)
+    else:
+        req = requests.get(web_hook, headers=headers)
     if req.status_code==200:
         print("APIF: OK")
     else:
