@@ -94,11 +94,10 @@ def request_executor(webhook, auth_token, params, sync, format, output):
     headers = {}
     body = {}
     if auth_token:
-        headers = {'Authorization': 'Bearer ' + auth_token}
+        headers['Authorization'] = 'Bearer ' + auth_token
     if params:
         body = json.dumps({'params': params}).encode('utf-8')
     req = requests.post(webhook, headers=headers, data=body)
-    print(req.request.body)
     if sync:
         if format == "bool":
             parsed_json = json.loads(req.content)

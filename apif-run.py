@@ -108,3 +108,7 @@ if args.out:
     file = open(os.path.join(args.out), 'w')
     response_body = req.content
     file.write(response_body.decode('utf-8'))
+    if req.status_code==200:
+        print("APIF: OK")
+    else:
+        print("APIF: " +str(req.status_code)+ " error")
