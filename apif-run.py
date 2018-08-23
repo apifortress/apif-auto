@@ -102,7 +102,7 @@ for arg in potential_args:
 for route in route_list:
     web_hook = web_hook + route
 
-req = request_executor(web_hook, auth_token, params, args.Sync, args.format)
+req = request_executor(web_hook, auth_token, params, args.Sync, args.format, args.out)
 
 if args.out:
     file = open(os.path.join(args.out), 'w')
