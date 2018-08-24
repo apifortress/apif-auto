@@ -87,5 +87,5 @@ if config_key:
 if args.credentials:
     auth_token = get_token(args.credentials, web_hook)
 
-req = push_request_executor(web_hook, auth_token, payload)
+push_request_executor(web_hook, auth_token, payload)
 
