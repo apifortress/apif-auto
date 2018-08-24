@@ -4,7 +4,7 @@ import os.path
 import json
 import yaml
 import sys
-from functions import get_token, bool_return, request_executor
+from functions import get_token, bool_return, run_request_executor
 
 pull_parser = argparse.ArgumentParser(description='APIF CLI Tool.')
 pull_parser.add_argument('method', action="store", type=str, choices=['run-all', 'run-by-id', 'run-by-tag'], help="this is the type of run that you'll be performing.")
@@ -102,7 +102,7 @@ for arg in potential_args:
 for route in route_list:
     web_hook = web_hook + route
 
-req = request_executor(web_hook, auth_token, params, args.Sync, args.format, args.out)
+req = run_request_executor(web_hook, auth_token, params, args.Sync, args.format, args.out)
 
 if args.out:
     file = open(os.path.join(args.out), 'w')

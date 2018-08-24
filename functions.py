@@ -90,7 +90,7 @@ def bool_return(json):
         else:
             return True
 
-def request_executor(webhook, auth_token, params, sync, format, output):
+def run_request_executor(webhook, auth_token, params, sync, format, output):
     headers = {}
     body = {}
     if auth_token:
@@ -115,4 +115,13 @@ def request_executor(webhook, auth_token, params, sync, format, output):
         else:
             print("APIF: " +str(req.status_code)+ " error")
     return req
-    
+
+def push_request_executor(webhook, auth_token, payload):
+    headers = {}
+    if auth_token:
+        headers = {'Authorization': 'Bearer ' + auth_token}
+    req = requests.post(webhook + '/tests/push', headers=headers, data=json.dumps(payload).encode('utf-8'))
+    if req.status_code==200:
+        print("APIF: OK")
+    else:
+        print("APIF: " + str(req.status_code) + " error")

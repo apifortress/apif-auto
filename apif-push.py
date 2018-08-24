@@ -4,7 +4,7 @@ import os.path
 import json
 import yaml
 import sys
-from functions import payload_builder, get_token, traverser
+from functions import payload_builder, get_token, traverser, push_request_executor
 
 push_parser = argparse.ArgumentParser(description='Push Test to APIF Platform')
 push_parser.add_argument('hook', action="store", type=str, help="This is your webhook. It is required. It can be passed as either a URL, or a key from a configuration file.")
@@ -87,16 +87,5 @@ if config_key:
 if args.credentials:
     auth_token = get_token(args.credentials, web_hook)
 
-if auth_token:
-    headers = {'Authorization': 'Bearer ' + auth_token}
-    req = requests.post(web_hook + '/tests/push', headers=headers, data=json.dumps(payload).encode('utf-8'))
-    if req.status_code==200:
-        print("APIF: OK")
-    else:
-        print("APIF: " + str(req.status_code) + " error")
-elif web_hook:
-    req = requests.post(web_hook + '/tests/push', data=json.dumps(payload).encode('utf-8'))
-    if req.status_code==200:
-        print("APIF: OK")
-    else:
-        print("APIF:" +str(req.status_code)+ " error")
+req = push_request_executor(web_hook, auth_token, payload)
+
