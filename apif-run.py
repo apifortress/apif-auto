@@ -70,8 +70,8 @@ if args.credentials:
 
 if args.env:
     for env in args.env:
-        split_env = env.split(":")
-        params[split_env[0]] = split_env[1]
+        if ':' in env:
+            params[env[0:env.find(':')].strip()] = env[env.find(':')+1:].strip()
 
 if args.method == "run-all":
     web_hook = web_hook + '/tests/run-all'
