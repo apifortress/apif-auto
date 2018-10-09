@@ -56,11 +56,7 @@ if args.path:
 
 
 if args.config:
-    with open(os.path.join(args.config)) as stream:
-        try:
-            config_yaml = (yaml.load(stream))
-        except yaml.YAMLError as exc:
-            print(exc)
+    config_yaml = yaml_parser(os.path.join(args.config))
 
 if args.recursive:
     for path in args.path:
@@ -83,5 +79,5 @@ if config_key:
 if args.credentials:
     auth_token = get_token(args.credentials, web_hook)
 
-push_request_executor(web_hook, auth_token, payload)
+push_request_executor(web_hook, auth_token, json.dumps(payload).encode('utf-8'))
 
