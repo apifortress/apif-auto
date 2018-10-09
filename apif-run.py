@@ -4,7 +4,7 @@ import os.path
 import json
 import yaml
 import sys
-from functions import get_token, bool_return, run_request_executor
+from functions import get_token, bool_return, run_request_executor, yaml_parser
 
 pull_parser = argparse.ArgumentParser(description='APIF CLI Tool.')
 pull_parser.add_argument('method', action="store", type=str, choices=['run-all', 'run-by-id', 'run-by-tag'], help="this is the type of run that you'll be performing.")
@@ -51,11 +51,7 @@ if args.config:
 
 if config_key:
     if not args.config:
-        with open(os.path.join(os.path.dirname(os.path.abspath(__file__)),'config.yml')) as stream:
-            try:
-                config_yaml = (yaml.load(stream))
-            except yaml.YAMLError as exc:
-                print(exc)
+        config_yaml = yaml_parser()
     for hook in config_yaml['hooks']:
         key = hook['key']
         if key == config_key:
