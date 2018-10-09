@@ -121,7 +121,6 @@ def push_request_executor(webhook, auth_token, payload):
     if auth_token:
         headers = {'Authorization': 'Bearer ' + auth_token}
     req = requests.post(webhook + '/tests/push', headers=headers, data=payload)
-    print(req.text)
     if req.status_code==200:
         print("APIF: OK")
     else:
