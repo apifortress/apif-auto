@@ -126,12 +126,7 @@ def push_request_executor(webhook, auth_token, payload):
     else:
         print("APIF: " + str(req.status_code) + " error")
 
-def choose_hook(branch, config):
-    with open(config) as stream:
-            try:
-                config_yaml = (yaml.load(stream))
-            except yaml.YAMLError as exc:
-                print(exc)
+def choose_hook(branch, config_yaml):
     for hook in config_yaml['hooks']:
         if "branch" in hook and branch == hook['branch']:
             return {"hook": hook['url'], "credentials": hook['credentials']}
