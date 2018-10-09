@@ -43,12 +43,8 @@ else:
     config_key = args.hook
 
 if args.config:
-    with open(os.path.join(args.config)) as stream:
-        try:
-            config_yaml = (yaml.load(stream))
-        except yaml.YAMLError as exc:
-            print(exc)
-
+    config_yaml = yaml_parser(os.path.join(args.config))
+    
 if config_key:
     if not args.config:
         config_yaml = yaml_parser()

@@ -120,7 +120,7 @@ def push_request_executor(webhook, auth_token, payload):
     headers = {}
     if auth_token:
         headers = {'Authorization': 'Bearer ' + auth_token}
-    req = requests.post(webhook + '/tests/push', headers=headers, data=json.dumps(payload).encode('utf-8'))
+    req = requests.post(webhook + '/tests/push', headers=headers, data=payload)
     if req.status_code==200:
         print("APIF: OK")
     else:
@@ -131,8 +131,8 @@ def choose_hook(branch, config_yaml):
         if "branch" in hook and branch == hook['branch']:
             return {"hook": hook['url'], "credentials": hook['credentials']}
 
-def yaml_parser():
-    with open(os.path.join(os.path.dirname(os.path.abspath(__file__)),'config.yml')) as stream:
+def yaml_parser(path = os.path.join(os.path.dirname(os.path.abspath(__file__)),'config.yml')):
+    with open(path) as stream:
             try:
                 config_yaml = (yaml.load(stream))
             except yaml.YAMLError as exc:
