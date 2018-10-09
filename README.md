@@ -65,6 +65,7 @@ hooks:
       password: (another password)
   - key: unauth_proj
     url: https://mastiff.apifortress.com/app/api/rest/v3/JUST_A_WEBHOOK_WITHOUT_CREDENTIALS
+  -test_directory: /tests
 ```
 
 Once you create a configuration file, you can pass the path with **\-c** and the key to the data in place of the normal hook URL. If you also pass credentials, they'll override the credentials in the configuration file. If you don't include credentials in the config file, you can pass them manually or leave them out entirely. 
@@ -87,3 +88,7 @@ Execute one test in a project by ID, using a config file for credentials and web
 
 * The order of the optional arguments passed does not matter.
 * Remember, in a bash environment, anything that has a space in it needs to be wrapped in quotes. This goes for paths, filenames, etc. 
+
+# POST-RECEIVE SCRIPT FOR GIT
+
+This Post-Receive script is meant to assist in the incopration of API Fortress in your Git workflow. Dropping the file into the **hooks** directory of your .git file will cause newly committed API Fortress test code to be pushed to the API Fortress platform. The '**test_directory**' key in the config.yml will let the scripts know which folder the tests themselves are located in. It will then watch for commits from this folder and push the appropriate code to the platform. 
