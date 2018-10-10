@@ -30,6 +30,7 @@ ex: to run all of the tests in a specific project, we would use the following co
 *  **\-C** - CREDENTIALS - This allows you to manually pass user credentials (username:password) **(SUPERSEDES CONFIG FILE)**
 *  **\-t** - TAG - This is how you pass a tag for RUN BY TAG mode.
 *  **\-i** - ID - This is how you pass an ID for RUN BY ID mode.
+* **\-e** - ENVIRONMENT - This is how you pass environmental/override variables. The format is **key:value**. You can pass multiple sets of environmental variables like so: **key:value key1:value1 key2:value2**
 
 # APIF-PUSH
 
@@ -65,7 +66,7 @@ hooks:
       password: (another password)
   - key: unauth_proj
     url: https://mastiff.apifortress.com/app/api/rest/v3/JUST_A_WEBHOOK_WITHOUT_CREDENTIALS
-  -test_directory: /tests
+test_directory: /tests
 ```
 
 Once you create a configuration file, you can pass the path with **\-c** and the key to the data in place of the normal hook URL. If you also pass credentials, they'll override the credentials in the configuration file. If you don't include credentials in the config file, you can pass them manually or leave them out entirely. 
