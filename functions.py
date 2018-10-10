@@ -138,3 +138,42 @@ def yaml_parser(path = os.path.join(os.path.dirname(os.path.abspath(__file__)),'
             except yaml.YAMLError as exc:
                 print(exc)
     return config_yaml
+
+def obj_creator(arr):
+  obj = {}
+  for item in arr:
+    if item in ['json', 'junit', 'bool']:
+        item = "format=" + item
+    if item == None:
+        continue
+    else: 
+        split_item = item.split('=')
+        key = split_item[0]
+        value = split_item[1]
+        obj[key] = value
+  return obj
+
+def obj_validator(obj):
+  for key in obj:
+    if key in ['format', 'dryrun']:
+      if 'sync' not in obj:
+        return ("invalid")
+  return ("valid")
+
+def string_builder(obj):
+  string = "?"
+  for key in obj:
+    string += (key + "=" + obj[key] + "&")
+  return string
+
+def query_builder(arr):
+  obj = obj_creator(arr)
+  result = obj_validator(obj)
+  if result == "valid":
+    new_string = string_builder(obj)
+    query_string = new_string[:-1]
+    return query_string
+  else:
+    print('Format and Dry arguments require Sync mode (-S)')
+    sys.exit(1)
+
