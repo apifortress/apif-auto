@@ -4,17 +4,17 @@ import os.path
 import json
 import yaml
 import sys
-from functions import get_token, bool_return, run_request_executor, yaml_parser
+from functions import get_token, bool_return, run_request_executor, yaml_parser, query_builder
 
 pull_parser = argparse.ArgumentParser(description='APIF CLI Tool.')
 pull_parser.add_argument('method', action="store", type=str, choices=['run-all', 'run-by-id', 'run-by-tag'], help="this is the type of run that you'll be performing.")
 pull_parser.add_argument('hook', action="store", type=str, help="This is your webhook. It is required. It can be passed as either a URL, or a key from a configuration file.")
 pull_parser.add_argument('-f', '--format', action="store", type=str,
                     help="This is the output format. Default is JSON, other options are junit or bool. REQUIRES SYNC MODE (-S)")
-pull_parser.add_argument('-S', '--Sync', const='?sync=true', nargs='?',
+pull_parser.add_argument('-S', '--Sync', const='sync=true', nargs='?',
                     help="Sync mode. Waits for a response from the API route.")
-pull_parser.add_argument('-d', '--dry', const='&dryrun=true', nargs='?', help='Dry run mode.')
-pull_parser.add_argument('-s', '--silent', const='&silent=true', nargs='?', help='Silent mode')
+pull_parser.add_argument('-d', '--dry', const='dryrun=true', nargs='?', help='Dry run mode.')
+pull_parser.add_argument('-s', '--silent', const='silent=true', nargs='?', help='Silent mode')
 pull_parser.add_argument('-o', '--out', action='store', type=str, help="output to directory")
 pull_parser.add_argument('-c', '--config', action='store', type=str, help="path to config file. Defaults to ./config.yml")
 pull_parser.add_argument('-C', '--credentials',
@@ -80,19 +80,11 @@ elif args.method == "run-by-id":
         print("Run by ID requires an ID (-i)")
         sys.exit(1)
 
-route_list = []
-
 potential_args = [args.Sync, args.dry, args.silent, args.format]
 
-for arg in potential_args:
-    if arg:
-        if arg == args.format:
-            route_list.append('&format=' + args.format)
-        else:
-            route_list.append(arg)
+route_list = query_builder(potential_args)
 
-for route in route_list:
-    web_hook = web_hook + route
+web_hook += route_list
 
 req = run_request_executor(web_hook, auth_token, params, args.Sync, args.format, args.out)
 
