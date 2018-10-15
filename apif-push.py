@@ -48,7 +48,11 @@ if args.path:
         for path in args.path:
             if path[len(path)-1] != os.sep:
                 path = path + os.sep
-            payload_builder(path, branch, payload)
+            try:
+                payload_builder(path, branch, payload)
+            except:
+                print('There are no test files in this directory. Try the recursive (-r) tag!')
+                sys.exit(1)
     else:
         for path in args.path:
             if path[len(path)-1] != os.sep:
@@ -75,11 +79,9 @@ if config_key:
                     config_credentials = (hook['credentials']['username'] + ":" + hook['credentials']['password'])
                     args.credentials = config_credentials
 
-if not web_hook:
-    print("Couldn't find any hook to use. Check your configuration")
-    exit(1)
 
 if args.credentials:
     auth_token = get_token(args.credentials, web_hook)
 
 push_request_executor(web_hook, auth_token, json.dumps(payload).encode('utf-8'))
+
