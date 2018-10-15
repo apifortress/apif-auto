@@ -1,0 +1,50 @@
+#!/usr/bin/env python
+
+import subprocess
+import yaml
+import fileinput
+import requests
+import sys
+import json
+from functions import get_token, push_request_executor, choose_hook, yaml_parser
+
+#Set your config file route here:
+
+config = yaml_parser()
+
+test_subdirectory = config['test_directory']
+
+def post_receive(from_commit, to_commit, branch_name):
+    print('APIF: Checking for modified')
+
+    p = subprocess.Popen("git rev-parse --symbolic --abbrev-ref " + branch_name, stdout=subprocess.PIPE, shell=True)
+    branch_name = p.stdout.read().strip()
+    p = subprocess.Popen('git show ' + branch_name +  ' --pretty= --name-status', stdout=subprocess.PIPE, shell=True)
+    files = p.stdout.read()
+    files = files.strip().split('\n')
+    body = {'resources':[]}
+
+    for f in files:
+        items = f.split('\t')
+        if (items[0] in ['A','M']) and items[1].startswith(test_subdirectory):
+            fn = items[1]
+            fn = fn[len(test_subdirectory):len(items[1])]
+            string_item = ['git show ' +branch_name+':' + '"'+items[1]+'"']
+            p = subprocess.Popen(string_item, stdout=subprocess.PIPE, shell=True)
+            content = p.stdout.read().strip()
+            resource = {'path':fn,'branch':branch_name,'revision':"to_commit",'content':content}
+            body['resources'].append(resource)
+
+    print("APIF: Updating "+str(len(body['resources']))+' remote test files')
+
+    if len(body['resources']) > 0:
+        chosen_hook = choose_hook(branch_name, config)
+        params = json.dumps(body).encode('utf-8')
+        webhook = chosen_hook['hook']
+        user_credentials = chosen_hook['credentials']['username'] + ":" + chosen_hook['credentials']['password']
+        auth_token = get_token(user_credentials, webhook)
+        push_request_executor(webhook, auth_token, params)
+
+fc,tc,bn = fileinput.input()[0].split()
+
+post_receive(fc, tc, bn)

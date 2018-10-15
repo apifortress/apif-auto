@@ -1,11 +1,6 @@
-External Libraries
-venv
 .vscode
 config.yml
-venv2
-format.json
-builder.py
-test.py
 __pycache__
 .idea
 *.pyc
+.DS_Store

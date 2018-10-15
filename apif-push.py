@@ -4,7 +4,7 @@ import os.path
 import json
 import yaml
 import sys
-from functions import payload_builder, get_token, traverser, push_request_executor
+from functions import payload_builder, get_token, traverser, push_request_executor, yaml_parser
 
 push_parser = argparse.ArgumentParser(description='Push Test to APIF Platform')
 push_parser.add_argument('hook', action="store", type=str, help="This is your webhook. It is required. It can be passed as either a URL, or a key from a configuration file.")
@@ -56,11 +56,7 @@ if args.path:
 
 
 if args.config:
-    with open(os.path.join(args.config)) as stream:
-        try:
-            config_yaml = (yaml.load(stream))
-        except yaml.YAMLError as exc:
-            print(exc)
+    config_yaml = yaml_parser(os.path.join(args.config))
 
 if args.recursive:
     for path in args.path:
@@ -69,11 +65,7 @@ if args.recursive:
 
 if config_key:
     if not args.config:
-        with open(os.path.join(os.path.dirname(os.path.abspath(__file__)),'config.yml')) as stream:
-            try:
-                config_yaml = (yaml.load(stream))
-            except yaml.YAMLError as exc:
-                print(exc)
+        config_yaml = yaml_parser()
     for hook in config_yaml['hooks']:
         key = hook['key']
         if key == config_key:
@@ -83,9 +75,11 @@ if config_key:
                     config_credentials = (hook['credentials']['username'] + ":" + hook['credentials']['password'])
                     args.credentials = config_credentials
 
+if not web_hook:
+    print("Couldn't find any hook to use. Check your configuration")
+    exit(1)
 
 if args.credentials:
     auth_token = get_token(args.credentials, web_hook)
 
-push_request_executor(web_hook, auth_token, payload)
-
+push_request_executor(web_hook, auth_token, json.dumps(payload).encode('utf-8'))
