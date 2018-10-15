@@ -65,7 +65,7 @@ def traverser(route, branch, payload):
                         "revision" : "",
                         "content" : ""
                     }
-                
+
                 with open(os.path.abspath(os.path.join(root + "/" + next_file))) as stream:
                     try:
                         content = stream.read()
@@ -146,10 +146,13 @@ def obj_creator(arr):
             item = "format=" + item
         if item == None:
             continue
-        else: 
+        else:
             split_item = item.split('=')
             key = split_item[0]
-            value = split_item[1]
+            if '=' in item:
+                value = split_item[1]
+            else:
+                value = 'true'
             obj[key] = value
     return obj
 
@@ -176,4 +179,3 @@ def query_builder(arr):
     else:
         print('Format and Dry arguments require Sync mode (-S)')
         sys.exit(1)
-
