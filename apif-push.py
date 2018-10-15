@@ -75,9 +75,11 @@ if config_key:
                     config_credentials = (hook['credentials']['username'] + ":" + hook['credentials']['password'])
                     args.credentials = config_credentials
 
+if not web_hook:
+    print("Couldn't find any hook to use. Check your configuration")
+    exit(1)
 
 if args.credentials:
     auth_token = get_token(args.credentials, web_hook)
 
 push_request_executor(web_hook, auth_token, json.dumps(payload).encode('utf-8'))
-
