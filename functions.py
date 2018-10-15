@@ -98,6 +98,9 @@ def run_request_executor(webhook, auth_token, params, sync, format, output):
     if params:
         body = json.dumps({'params': params}).encode('utf-8')
     req = requests.post(webhook, headers=headers, data=body)
+    if req.status_code!=200:
+        print("APIF: " +str(req.status_code)+ " error")
+        return req
     if sync:
         if format == "bool":
             parsed_json = json.loads(req.content)
@@ -110,10 +113,7 @@ def run_request_executor(webhook, auth_token, params, sync, format, output):
             else:
                 print(req.content)
     else:
-        if req.status_code==200:
-            print("APIF: OK")
-        else:
-            print("APIF: " +str(req.status_code)+ " error")
+        print("APIF: OK")
     return req
 
 def push_request_executor(webhook, auth_token, payload):
