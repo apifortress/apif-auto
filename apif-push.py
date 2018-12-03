@@ -16,6 +16,8 @@ push_parser.add_argument('-p', '--path', type=str, nargs="?", action='append', h
 push_parser.add_argument('-k', '--key', action='store', type=str,
                     help='A key from a configuration file. Pulls the related configuration data.')
 push_parser.add_argument('-b', '--branch', action='store', type=str, help="The specific branch")
+push_parser.add_argument('-T', '--tag', action='append', nargs='?', help="Any tags to be attached")
+push_parser.add_argument('-t', '--addTag', action='append', nargs='?', help="Any tags that should be added to the existent tags")
 
 if len(sys.argv) == 1:
     push_parser.print_help(sys.stderr)
@@ -36,12 +38,23 @@ else:
 
 branch = "master"
 
+
 payload = {
-    "resources": []
+    "resources": [],
 }
 
 if args.branch:
     branch = args.branch
+
+if args.tag:
+    payload['tags'] = []
+    for tag in args.tag:
+        payload["tags"].append(tag)
+
+if args.addTag:
+    payload['addTags'] = []
+    for tag in args.addTag:
+        payload["addTags"].append(tag)
 
 if args.path:
     if not args.recursive:
