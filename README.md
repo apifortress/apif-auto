@@ -94,4 +94,4 @@ Execute one test in a project by ID, using a config file for credentials and web
 
 # POST-RECEIVE SCRIPT FOR GIT
 
-This Post-Receive script is meant to assist in the incopration of API Fortress in your Git workflow. Dropping the file into the **hooks** directory of your .git file will cause newly committed API Fortress test code to be pushed to the API Fortress platform. The '**test_directory**' key in the config.yml will let the scripts know which folder the tests themselves are located in. It will then watch for commits from this folder and push the appropriate code to the platform. 
+This Post-Receive script is meant to assist in the incorporation of API Fortress in your Git workflow. Dropping the file into the **hooks** directory of your .git file will cause newly committed API Fortress test code to be pushed to the API Fortress platform. The '**test_directory**' key in the config.yml will let the scripts know which folder the tests themselves are located in. It will then watch for commits from this folder and push the appropriate code to the platform. 
