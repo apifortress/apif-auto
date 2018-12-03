@@ -47,6 +47,8 @@ Push allows us to push tests into API Fortress. When tests are downloaded from t
 * **\-b** - BRANCH - This allows you to specify a Git branch that these test files are attached to. **Default is master.** 
 *  **\-c** - CONFIG - This provides the path to a configuration file which can provide webhooks and user credentials. If no path is specified, the program will look for a config.yml in the same directory as it is (./config.yml)
 *  **\-C** - CREDENTIALS - This allows you to manually pass user credentials (username:password) **(SUPERSEDES CONFIG FILE)**
+* **\-T** - TAG - This attaches tags to be added to the test on push. These tags will **overwrite existing tags**
+* **\-t** - ADD TAGS - This will add additional tags to any tags that already exist on an existent test. 
 
 # CONFIGURATION FILE
 
