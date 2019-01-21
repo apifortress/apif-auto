@@ -113,7 +113,7 @@ def run_request_executor(webhook, auth_token, params, sync, format, output):
                 parsed_json = json.loads(req.content)
                 print(json.dumps(parsed_json, indent=4))
             else:
-                print(req.content)
+                print(req.content.decode())
     else:
         print("APIF: OK")
     return req
