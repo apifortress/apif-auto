@@ -5,6 +5,8 @@ import json
 import sys
 import io
 import yaml
+import urllib3
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 ## This is the function that generates a payload for the -p (path) tag.
 
@@ -39,7 +41,7 @@ def payload_builder(path, branch, payload):
 
 def get_token(credentials, hook):
     user_creds = credentials.split(":")
-    auth_req = requests.get(hook + '/login', auth=(user_creds[0], user_creds[1]))
+    auth_req = requests.get(hook + '/login', auth=(user_creds[0], user_creds[1]), verify=False)
     access_token = auth_req.content
     parsed_token = json.loads(access_token.decode("utf-8"))
     if not "access_token" in parsed_token:
@@ -97,7 +99,7 @@ def run_request_executor(webhook, auth_token, params, sync, format, output):
         headers['Authorization'] = 'Bearer ' + auth_token
     if params:
         body = json.dumps({'params': params}).encode('utf-8')
-    req = requests.post(webhook, headers=headers, data=body)
+    req = requests.post(webhook, headers=headers, data=body, verify=False)
     if req.status_code!=200:
         print("APIF: " +str(req.status_code)+ " error")
         return req
@@ -111,7 +113,7 @@ def run_request_executor(webhook, auth_token, params, sync, format, output):
                 parsed_json = json.loads(req.content)
                 print(json.dumps(parsed_json, indent=4))
             else:
-                print(req.content)
+                print(req.content.decode())
     else:
         print("APIF: OK")
     return req
@@ -120,7 +122,7 @@ def push_request_executor(webhook, auth_token, payload):
     headers = {}
     if auth_token:
         headers = {'Authorization': 'Bearer ' + auth_token}
-    req = requests.post(webhook + '/tests/push', headers=headers, data=payload)
+    req = requests.post(webhook + '/tests/push', headers=headers, data=payload, verify=False)
     if req.status_code==200:
         print("APIF: OK")
     else:
