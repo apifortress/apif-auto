@@ -5,6 +5,8 @@ import json
 import sys
 import io
 import yaml
+import urllib3
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 ## This is the function that generates a payload for the -p (path) tag.
 
