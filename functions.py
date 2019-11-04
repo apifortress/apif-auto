@@ -128,6 +128,37 @@ def push_request_executor(webhook, auth_token, payload):
     else:
         print("APIF: " + str(req.status_code) + " error")
 
+def exec_request_executor(webhook, auth_token, params, unit, inpt, sync, format, output):
+    headers = {}
+    body = {}
+
+    if auth_token:
+        headers['Authorization'] = 'Bearer ' + auth_token
+
+    if params:
+        body = json.dumps({'params': params, 'unit': unit, 'input': inpt}).encode("utf-8")
+    else:
+        body = json.dumps({'unit': unit, 'input': inpt}).encode("utf-8")
+
+    req = requests.post(webhook, headers=headers, data=body, verify=False)
+    if req.status_code!=200:
+        print("APIF: " +str(req.status_code)+ " error")
+        return req
+    if sync:
+        if format == "bool":
+            parsed_json = json.loads(req.content)
+            print(bool_return(parsed_json))
+            sys.exit(1)
+        if not output:
+            if req.headers["Content-Type"].startswith('application/json'):
+                parsed_json = json.loads(req.content)
+                print(json.dumps(parsed_json, indent=4))
+            else:
+                print(req.content.decode())
+    else:
+        print("APIF: OK")
+    return req
+
 def choose_hook(branch, config_yaml):
     for hook in config_yaml['hooks']:
         if "branch" in hook and branch == hook['branch']:
