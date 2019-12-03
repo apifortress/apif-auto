@@ -20,8 +20,8 @@ pull_parser.add_argument('-c', '--config', action='store', type=str, help="path 
 pull_parser.add_argument('-C', '--credentials',
                     help='user credentials. overrides credentials present in config file <username:password>')
 pull_parser.add_argument('-e', '--env', action='append', nargs="?", help='Any environmental override variables you wish to pass')
-pull_parser.add_argument('-u', '--unit', action='store', type=str, help='Required: path to unit.xml')
-pull_parser.add_argument('-i', '--input', action='store', type=str, help='Required: path to input.xml')
+pull_parser.add_argument('-p', '--path', type=str, nargs="?", action='append', help="this is the path to the files you want to execute")
+pull_parser.add_argument('-r', '--recursive', nargs="?", action='append', help='Recursive file-getter')
 
 if len(sys.argv) == 1:
     pull_parser.print_help(sys.stderr)
@@ -37,20 +37,50 @@ auth_token = None
 
 params = {}
 
-if not args.unit:
-    print("No path to unit file. Please provide a path to the unit.xml")
-    exit(1)
-elif not args.input:
-    print("No path to input file. Please provide a path to the input.xml")
-    exit(1)
+ut = None
+it = None
 
-unit = open(args.unit,"r")
-ut = unit.read().replace("\"","\'")
-unit.close()
+if args.path:
+    for path in args.path:
+        if path[len(path)-1] != os.sep:
+            path = path + os.sep
+        if not args.recursive:
+            try:
+                for root, dirs, files in os.walk(path):
+                    seperator = os.sep
+                    dir_name = root.split(seperator)[-2]
+                    for next_file in files:
+                        if "unit" in next_file:
+                            unit = open(path + next_file, "r")
+                            ut = unit.read().replace("\"", "\'")
+                            unit.close()
+                        elif "input" in next_file:
+                            inpt = open(path + next_file, "r")
+                            it = inpt.read().replace("\"", "\'")
+                            inpt.close()
+            except:
+                print('There are no test files in this directory. Try the recursive (-r) tag!')
+                sys.exit(1)
+        else:
+            try:
+                for root, dirs, files in os.walk(path):
+                    seperator = os.sep
+                    dir_name = root.split(seperator)[-2]
+                    for directory in dirs:
+                        for r, d, f in os.walk(path + directory + '/'):
+                            for next_file in f:
+                                if "unit" in next_file:
+                                    unit = open(path + directory + '/' + next_file, "r")
+                                    ut = unit.read().replace("\"", "\'")
+                                    unit.close()
+                                elif "input" in next_file:
+                                    inpt = open(path + directory + '/' + next_file, "r")
+                                    it = inpt.read().replace("\"", "\'")
+                                    inpt.close()
+            except:
+                print('There are no test files in this directory. Try the recursive (-r) tag!')
+                sys.exit(1)
 
-inpt = open(args.input,"r")
-it = inpt.read().replace("\"","\'")
-inpt.close()
 
 if args.hook.startswith("http" or "https"):
     web_hook = args.hook
@@ -97,7 +127,5 @@ if args.out:
     file = open(os.path.join(args.out), 'w')
     response_body = req.content
     file.write(response_body.decode('utf-8'))
-    if req.status_code==200:
+    if req.status_code == 200:
         print("APIF: OK")
-    else:
-        print("APIF: " +str(req.status_code)+ " error")
