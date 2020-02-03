@@ -22,6 +22,7 @@ pull_parser.add_argument('-C', '--credentials',
 pull_parser.add_argument('-t', '--tag', action="store", type=str, help='a test tag')
 pull_parser.add_argument('-i', '--id', action='store', type=str, help='a test id')
 pull_parser.add_argument('-e', '--env', action='append', nargs="?", help='Any environmental override variables you wish to pass')
+pull_parser.add_argument('-D', '--downloader',action="store", type=str, help="A downloader ID")
 
 if len(sys.argv) == 1:
     pull_parser.print_help(sys.stderr)
@@ -83,7 +84,7 @@ elif args.method == "run-by-id":
         print("Run by ID requires an ID (-i)")
         sys.exit(1)
 
-potential_args = [args.Sync, args.dry, args.silent, args.format]
+potential_args = [args.Sync, args.dry, args.silent, args.format, ('downloader='+args.downloader) if args.downloader is not None else None]
 
 route_list = query_builder(potential_args)
 

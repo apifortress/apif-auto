@@ -135,7 +135,7 @@ def push_request_executor(webhook, auth_token, payload):
         print("APIF: " + str(req.status_code) + " error")
 
 
-def exec_request_executor(webhook, auth_token, params, unit, inpt, sync, format, output):
+def exec_request_executor(webhook, auth_token, params, unit, inpt, name, sync, format, output):
     headers = {}
     body = {}
 
@@ -143,9 +143,9 @@ def exec_request_executor(webhook, auth_token, params, unit, inpt, sync, format,
         headers['Authorization'] = 'Bearer ' + auth_token
 
     if params:
-        body = json.dumps({'params': params, 'unit': unit, 'input': inpt}).encode("utf-8")
+        body = json.dumps({'params': params, 'unit': unit, 'input': inpt, 'name': name}).encode("utf-8")
     else:
-        body = json.dumps({'unit': unit, 'input': inpt}).encode("utf-8")
+        body = json.dumps({'unit': unit, 'input': inpt, 'name': name}).encode("utf-8")
 
     req = requests.post(webhook, headers=headers, data=body, verify=False)
     if req.status_code != 200:

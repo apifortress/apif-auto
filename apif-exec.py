@@ -21,7 +21,7 @@ pull_parser.add_argument('-C', '--credentials',
                     help='user credentials. overrides credentials present in config file <username:password>')
 pull_parser.add_argument('-e', '--env', action='append', nargs="?", help='Any environmental override variables you wish to pass')
 pull_parser.add_argument('-p', '--path', type=str, nargs="?", action='append', help="this is the path to the files you want to execute")
-pull_parser.add_argument('-r', '--recursive', nargs="?", action='append', help='Recursive file-getter')
+#pull_parser.add_argument('-r', '--recursive', nargs="?", action='append', help='Recursive file-getter')
 
 if len(sys.argv) == 1:
     pull_parser.print_help(sys.stderr)
@@ -39,47 +39,49 @@ params = {}
 
 ut = None
 it = None
+name = None
 
 if args.path:
     for path in args.path:
         if path[len(path)-1] != os.sep:
             path = path + os.sep
-        if not args.recursive:
-            try:
-                for root, dirs, files in os.walk(path):
-                    seperator = os.sep
-                    dir_name = root.split(seperator)[-2]
-                    for next_file in files:
-                        if "unit" in next_file:
-                            unit = open(path + next_file, "r")
-                            ut = unit.read().replace("\"", "\'")
-                            unit.close()
-                        elif "input" in next_file:
-                            inpt = open(path + next_file, "r")
-                            it = inpt.read().replace("\"", "\'")
-                            inpt.close()
-            except:
-                print('There are no test files in this directory. Try the recursive (-r) tag!')
-                sys.exit(1)
-        else:
-            try:
-                for root, dirs, files in os.walk(path):
-                    seperator = os.sep
-                    dir_name = root.split(seperator)[-2]
-                    for directory in dirs:
-                        for r, d, f in os.walk(path + directory + '/'):
-                            for next_file in f:
-                                if "unit" in next_file:
-                                    unit = open(path + directory + '/' + next_file, "r")
-                                    ut = unit.read().replace("\"", "\'")
-                                    unit.close()
-                                elif "input" in next_file:
-                                    inpt = open(path + directory + '/' + next_file, "r")
-                                    it = inpt.read().replace("\"", "\'")
-                                    inpt.close()
-            except:
-                print('There are no test files in this directory. Try the recursive (-r) tag!')
-                sys.exit(1)
+        #if not args.recursive:
+        try:
+            for root, dirs, files in os.walk(path):
+                seperator = os.sep
+                dir_name = root.split(seperator)[-2]
+                name = dir_name
+                for next_file in files:
+                    if "unit" in next_file:
+                        unit = open(path + next_file, "r")
+                        ut = unit.read().replace("\"", "\'")
+                        unit.close()
+                    elif "input" in next_file:
+                        inpt = open(path + next_file, "r")
+                        it = inpt.read().replace("\"", "\'")
+                        inpt.close()
+        except:
+            print('There are no test files in this directory. Try the recursive (-r) tag!')
+            sys.exit(1)
+        # else:
+        #     try:
+        #         for root, dirs, files in os.walk(path):
+        #             seperator = os.sep
+        #             dir_name = root.split(seperator)[-2]
+        #             for directory in dirs:
+        #                 for r, d, f in os.walk(path + directory + '/'):
+        #                     for next_file in f:
+        #                         if "unit" in next_file:
+        #                             unit = open(path + directory + '/' + next_file, "r")
+        #                             ut = unit.read().replace("\"", "\'")
+        #                             unit.close()
+        #                         elif "input" in next_file:
+        #                             inpt = open(path + directory + '/' + next_file, "r")
+        #                             it = inpt.read().replace("\"", "\'")
+        #                             inpt.close()
+        #     except:
+        #         print('There are no test files in this directory. Try the recursive (-r) tag!')
+        #         sys.exit(1)
 
 
 if args.hook.startswith("http" or "https"):
@@ -121,7 +123,7 @@ route_list = query_builder(potential_args)
 
 web_hook += route_list
 
-req = exec_request_executor(web_hook, auth_token, params, ut, it, args.Sync, args.format, args.out)
+req = exec_request_executor(web_hook, auth_token, params, ut, it, name, args.Sync, args.format, args.out)
 
 if args.out:
     file = open(os.path.join(args.out), 'w')
